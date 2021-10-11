@@ -37,15 +37,10 @@ const insert = async ({ name, ingredients, preparation }, userId) => {
     };
 };
 
-const runUpdateValidations = async (_id, name, userId, userRole) => {
-    const recipe = await Recipe.findOne({ _id });
+const runCommonValidations = async (recipeId, userId, userRole) => {
+    const recipe = await Recipe.findOne({ _id: recipeId });
     if (!recipe) {
-        FunctionalErrorException(ERROR_MSG_RECIPE_NOT_FOUND);
-    }
-
-    const recipeSameName = await Recipe.findOne({ _id: { $ne: _id }, name });
-    if (recipeSameName) {
-        throw new FunctionalErrorException(ERROR_MSG_RECIPE_ALREADY_EXISTS);
+        throw new FunctionalErrorException(ERROR_MSG_RECIPE_NOT_FOUND);
     }
 
     if (recipe.userId != userId && userRole !== ROLES.ADMIN) {
@@ -53,11 +48,16 @@ const runUpdateValidations = async (_id, name, userId, userRole) => {
     }
 };
 
-const update = async (_id, { name, ingredients, preparation }, userId, userRole) => {
-    await runUpdateValidations(_id, name, userId, userRole);
+const update = async (recipeId, { name, ingredients, preparation }, userId, userRole) => {
+    await runCommonValidations(recipeId, userId, userRole);
+
+    const recipeSameName = await Recipe.findOne({ _id: { $ne: recipeId }, name });
+    if (recipeSameName) {
+        throw new FunctionalErrorException(ERROR_MSG_RECIPE_ALREADY_EXISTS);
+    }
 
     const newRecipe = await Recipe.findOneAndUpdate(
-        { _id }, { name, ingredients, preparation }, { returnOriginal: false },
+        { _id: recipeId }, { name, ingredients, preparation }, { returnOriginal: false },
     );
 
     return {
@@ -67,6 +67,11 @@ const update = async (_id, { name, ingredients, preparation }, userId, userRole)
         preparation: newRecipe.preparation,
         userId: newRecipe.userId,
     };
+};
+
+const erase = async (recipeId, userId, userRole) => {
+    await runCommonValidations(recipeId, userId, userRole);
+    await Recipe.deleteOne({ _id: recipeId });
 };
 
 const addImage = async () => {
@@ -82,6 +87,7 @@ module.exports = {
     list,
     insert,
     update,
+    erase,
     addImage,
     getImage,
 };

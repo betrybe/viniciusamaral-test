@@ -48,4 +48,10 @@ router.put(
     resource.update,
 );
 
+router.delete(
+    '/:id',  
+    authenticationHandler,
+    resource.erase,
+);
+
 module.exports = router;

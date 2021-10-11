@@ -24,6 +24,12 @@ const update = async (req, res) => {
     return res.status(200).json(result);
 };
 
+const erase = async (req, res) => {
+    await recipesService.erase(req.params.id, req.user.id, req.user.role);
+    
+    return res.status(204).send();
+};
+
 const addImage = async (req, res) => {
     return res.status(204);
 };
@@ -37,6 +43,7 @@ module.exports = {
     get,
     insert,
     update,
+    erase,
     addImage,
     getImage,
 };
