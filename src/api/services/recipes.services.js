@@ -56,16 +56,16 @@ const update = async (recipeId, { name, ingredients, preparation }, userId, user
         throw new FunctionalErrorException(ERROR_MSG_RECIPE_ALREADY_EXISTS);
     }
 
-    const newRecipe = await Recipe.findOneAndUpdate(
+    const updatedRecipe = await Recipe.findOneAndUpdate(
         { _id: recipeId }, { name, ingredients, preparation }, { returnOriginal: false },
     );
 
     return {
-        _id: newRecipe.id,
-        name: newRecipe.name,
-        ingredients: newRecipe.ingredients,
-        preparation: newRecipe.preparation,
-        userId: newRecipe.userId,
+        _id: updatedRecipe.id,
+        name: updatedRecipe.name,
+        ingredients: updatedRecipe.ingredients,
+        preparation: updatedRecipe.preparation,
+        userId: updatedRecipe.userId,
     };
 };
 
@@ -74,8 +74,21 @@ const erase = async (recipeId, userId, userRole) => {
     await Recipe.deleteOne({ _id: recipeId });
 };
 
-const addImage = async () => {
+const addImage = async (recipeId, userId, userRole, image) => {
+    await runCommonValidations(recipeId, userId, userRole);
 
+    const updatedRecipe = await Recipe.findOneAndUpdate(
+        { _id: recipeId }, { image }, { returnOriginal: false },
+    );
+
+    return {
+        _id: updatedRecipe.id,
+        name: updatedRecipe.name,
+        ingredients: updatedRecipe.ingredients,
+        preparation: updatedRecipe.preparation,
+        userId: updatedRecipe.userId,
+        image: updatedRecipe.image,
+    };
 };
 
 const getImage = async () => {

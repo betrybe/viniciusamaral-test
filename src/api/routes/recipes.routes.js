@@ -1,14 +1,18 @@
 const express = require('express');
-const { body } = require('express-validator');
 
+const multer = require('multer');
+const { body } = require('express-validator');
+const storage = require('../services/storage.services');
+
+const validationHandler = require('../middlewares/validation-handler');
+const authenticationHandler = require('../middlewares/authentication-handler');
+
+const upload = multer(storage);
 const router = express.Router();
 
 const { 
     ERROR_MSG_INVALID_ENTRIES,
 } = require('../utilities/constants/error-messages');
-
-const validationHandler = require('../middlewares/validation-handler');
-const authenticationHandler = require('../middlewares/authentication-handler');
 
 const resource = require('../controllers/recipes.controllers');
 
@@ -52,6 +56,13 @@ router.delete(
     '/:id',  
     authenticationHandler,
     resource.erase,
+);
+
+router.post(
+    '/:id/image',  
+    authenticationHandler,
+    upload.single('image'),
+    resource.addImage,
 );
 
 module.exports = router;

@@ -31,7 +31,11 @@ const erase = async (req, res) => {
 };
 
 const addImage = async (req, res) => {
-    return res.status(204);
+    const fileName = `${req.get('host')}/${req.file.path.replace(/\\/g, '/')}`;
+    const result = await recipesService
+        .addImage(req.params.id, req.user.id, req.user.role, fileName, req.file);
+
+    return res.status(200).json(result);
 };
 
 const getImage = async (req, res) => {
