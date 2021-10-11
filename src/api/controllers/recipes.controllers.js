@@ -15,7 +15,7 @@ const get = async (req, res) => {
 const insert = async (req, res) => {
     const result = await recipesService.insert(req.body, req.user.id);
 
-    return res.status(201).json(result);
+    return res.status(201).json({ recipe: result });
 };
 
 const update = async (req, res) => {

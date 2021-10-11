@@ -28,13 +28,8 @@ const validate = (tokenHeader) => {
         throw new FunctionalErrorException(ERROR_MSG_LOGIN_MISSING_TOKEN);
     }
 
-    const splitedTokenHeader = tokenHeader.split(' ');
-    if (!splitedTokenHeader || !splitedTokenHeader.length === 2) {
-        throw new FunctionalErrorException(ERROR_MSG_LOGIN_MISSING_TOKEN);
-    }
-
     try {
-        return jwt.verify(splitedTokenHeader[1], TOKEN.SECRET);
+        return jwt.verify(tokenHeader, TOKEN.SECRET);
     } catch (err) {
         throw new FunctionalErrorException(ERROR_MSG_INCORRECT_TOKEN);
     }

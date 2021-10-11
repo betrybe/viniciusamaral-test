@@ -12,12 +12,12 @@ const ERROR_MSG_INVALID_ENTRIES = {
 // Login - Generate token
 const ERROR_MSG_LOGIN_EMPTY_FIELDS = {
     httpStatus: 401,
-    message: 'All fields must be filed',
+    message: 'All fields must be filled',
 };
 
-const ERROR_MSG_LOGIN_INVALID = {
+const ERROR_MSG_INVALID_LOGIN = {
     httpStatus: 401,
-    message: 'Incorret username or password',
+    message: 'Incorrect username or password',
 };
 
 // Login - Validate Token
@@ -44,7 +44,7 @@ const ERROR_MSG_ONLY_ADMINS_ACTION = {
 
 // Recipe
 const ERROR_MSG_RECIPE_NOT_FOUND = {
-    httpStatus: 400,
+    httpStatus: 404,
     message: 'recipe not found',
 };
 
@@ -61,7 +61,7 @@ module.exports = {
 
     // Login - Generate token
     ERROR_MSG_LOGIN_EMPTY_FIELDS,
-    ERROR_MSG_LOGIN_INVALID,
+    ERROR_MSG_INVALID_LOGIN,
 
     // Login - Validate Token
     ERROR_MSG_LOGIN_MISSING_TOKEN,

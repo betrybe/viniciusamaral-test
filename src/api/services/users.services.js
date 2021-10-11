@@ -1,7 +1,7 @@
 const FunctionalErrorException = require('../utilities/exceptions/functional-error-exception');
 const { 
     ERROR_MSG_USER_ALREADY_EXISTS, 
-    ERROR_MSG_LOGIN_INVALID, 
+    ERROR_MSG_INVALID_LOGIN, 
 } = require('../utilities/constants/error-messages');
 
 const User = require('../models/user.models');
@@ -27,7 +27,7 @@ const create = async ({ name, email, password }, role) => {
 const authenticate = async ({ email, password }) => {
     const user = await User.findOne({ email, password });
     if (!user) {
-        throw new FunctionalErrorException(ERROR_MSG_LOGIN_INVALID);
+        throw new FunctionalErrorException(ERROR_MSG_INVALID_LOGIN);
     }
 
     return tokenService.generate(user);

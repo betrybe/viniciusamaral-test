@@ -14,10 +14,13 @@ const {
     ERROR_MSG_INVALID_ENTRIES,
 } = require('../utilities/constants/error-messages');
 
+const customValidators = require('../utilities/validation/custom-validators');
+
 const resource = require('../controllers/recipes.controllers');
 
 router.get(
     '/:id',
+    validationHandler.validate([customValidators.idValidator]),
     resource.get,
 );
 
@@ -44,6 +47,7 @@ router.put(
     authenticationHandler,
     validationHandler.validate(
         [
+            customValidators.idValidator,
             body('name').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
             body('ingredients').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
             body('preparation').exists().withMessage(ERROR_MSG_INVALID_ENTRIES),
@@ -55,12 +59,14 @@ router.put(
 router.delete(
     '/:id',  
     authenticationHandler,
+    validationHandler.validate([customValidators.idValidator]),
     resource.erase,
 );
 
-router.post(
+router.put(
     '/:id/image',  
     authenticationHandler,
+    validationHandler.validate([customValidators.idValidator]),
     upload.single('image'),
     resource.addImage,
 );

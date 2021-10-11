@@ -3,10 +3,7 @@ const { body } = require('express-validator');
 
 const router = express.Router();
 
-const { 
-    ERROR_MSG_INVALID_ENTRIES, 
-    ERROR_MSG_LOGIN_INVALID_EMAIL,
-} = require('../utilities/constants/error-messages');
+const { ERROR_MSG_INVALID_ENTRIES } = require('../utilities/constants/error-messages');
 
 const validationHandler = require('../middlewares/validation-handler');
 const { 
@@ -18,13 +15,16 @@ const resource = require('../controllers/users.controllers');
 
 router.post(
     '',  
-    authenticationHandler,
     validationHandler.validate(
         [
             body('name').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
-            body('email').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
+            body('email')
+                .exists()
+                .withMessage(ERROR_MSG_INVALID_ENTRIES)
+                .bail()
+                .isEmail()
+                .withMessage(ERROR_MSG_INVALID_ENTRIES), 
             body('password').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
-            body('email').isEmail().withMessage(ERROR_MSG_LOGIN_INVALID_EMAIL),
         ],
     ),
     resource.create,
@@ -37,9 +37,13 @@ router.post(
     validationHandler.validate(
         [
             body('name').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
-            body('email').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
-            body('password').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
-            body('email').isEmail().withMessage(ERROR_MSG_LOGIN_INVALID_EMAIL),
+            body('email')
+                .exists()
+                .withMessage(ERROR_MSG_INVALID_ENTRIES)
+                .bail()
+                .isEmail()
+                .withMessage(ERROR_MSG_INVALID_ENTRIES), 
+            body('password').exists().withMessage(ERROR_MSG_INVALID_ENTRIES),
         ],
     ),
     resource.createAdmin,

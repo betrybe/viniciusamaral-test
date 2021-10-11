@@ -5,7 +5,7 @@ const router = express.Router();
 
 const { 
     ERROR_MSG_LOGIN_EMPTY_FIELDS, 
-    ERROR_MSG_LOGIN_INVALID_EMAIL, 
+    ERROR_MSG_INVALID_LOGIN, 
 } = require('../utilities/constants/error-messages');
 const validationHandler = require('../middlewares/validation-handler');
 
@@ -15,9 +15,13 @@ router.post(
     '', 
     validationHandler.validate(
         [
-            body('email').exists().withMessage(ERROR_MSG_LOGIN_EMPTY_FIELDS), 
-            body('password').exists().withMessage(ERROR_MSG_LOGIN_EMPTY_FIELDS), 
-            body('email').isEmail().withMessage(ERROR_MSG_LOGIN_INVALID_EMAIL),
+            body('email')
+                .exists()
+                .withMessage(ERROR_MSG_LOGIN_EMPTY_FIELDS)
+                .bail()
+                .isEmail()
+                .withMessage(ERROR_MSG_INVALID_LOGIN), 
+            body('password').exists().withMessage(ERROR_MSG_LOGIN_EMPTY_FIELDS),
         ],
     ),
     resource.authenticate,

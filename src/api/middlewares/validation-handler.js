@@ -2,12 +2,9 @@ const { validationResult } = require('express-validator');
 const { ERROR_MSG_GENERIC } = require('../utilities/constants/error-messages');
 
 const validate = (validations) => async (req, res, next) => {
-    await Promise.all(validations.map(async (v) => {
-        const result = await v.run(req);
-        if (result.length > 0) {
-            Promise.resolve(false);
-        }
-    }));
+    const promises = [];
+    validations.map((v) => promises.push(v.run(req)));
+    await Promise.all(promises);
   
     const errors = validationResult(req);
     if (errors.isEmpty()) {
