@@ -1,6 +1,8 @@
 const express = require('express');
 require('express-async-errors'); 
 
+path = require('path')
+
 const loginRoutes = require('./routes/login.routes');
 const userRoutes = require('./routes/users.routes');
 const recipeRoutes = require('./routes/recipes.routes');
@@ -19,6 +21,7 @@ app.get('/', (request, response) => {
 app.use('/login', loginRoutes);
 app.use('/users', userRoutes);
 app.use('/recipes', recipeRoutes);
+app.use('/images', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.use(errorHandler);
 
