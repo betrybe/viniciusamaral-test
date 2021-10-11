@@ -37,6 +37,11 @@ const ERROR_MSG_USER_ALREADY_EXISTS = {
     message: 'Email already registered',
 };
 
+const ERROR_MSG_ONLY_ADMINS_ACTION = {
+    httpStatus: 403,
+    message: 'Only admins can register new admins',
+};
+
 // Recipe
 const ERROR_MSG_RECIPE_NOT_FOUND = {
     httpStatus: 400,
@@ -64,6 +69,7 @@ module.exports = {
     
     // User
     ERROR_MSG_USER_ALREADY_EXISTS,
+    ERROR_MSG_ONLY_ADMINS_ACTION,
 
     // Recipe
     ERROR_MSG_RECIPE_ALREADY_EXISTS,

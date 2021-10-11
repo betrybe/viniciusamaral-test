@@ -8,7 +8,7 @@ const User = require('../models/user.models');
 
 const tokenService = require('./token.services');
 
-const create = async ({ name, email, password, role }) => {
+const create = async ({ name, email, password }, role) => {
     const alreadyExistingUser = await User.findOne({ email });
     if (alreadyExistingUser) {
         throw new FunctionalErrorException(ERROR_MSG_USER_ALREADY_EXISTS);

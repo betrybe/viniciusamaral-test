@@ -5,7 +5,7 @@ const { body } = require('express-validator');
 const storage = require('../services/storage.services');
 
 const validationHandler = require('../middlewares/validation-handler');
-const authenticationHandler = require('../middlewares/authentication-handler');
+const { authenticationHandler } = require('../middlewares/authentication-handler');
 
 const upload = multer(storage);
 const router = express.Router();

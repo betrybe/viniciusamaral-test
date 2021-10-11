@@ -9,7 +9,10 @@ const {
 } = require('../utilities/constants/error-messages');
 
 const validationHandler = require('../middlewares/validation-handler');
-const authenticationHandler = require('../middlewares/authentication-handler');
+const { 
+    authenticationHandler, 
+    isAdminAuthenticationHandler, 
+} = require('../middlewares/authentication-handler');
 
 const resource = require('../controllers/users.controllers');
 
@@ -25,6 +28,21 @@ router.post(
         ],
     ),
     resource.create,
+);
+
+router.post(
+    '/admin',  
+    authenticationHandler,
+    isAdminAuthenticationHandler,
+    validationHandler.validate(
+        [
+            body('name').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
+            body('email').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
+            body('password').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
+            body('email').isEmail().withMessage(ERROR_MSG_LOGIN_INVALID_EMAIL),
+        ],
+    ),
+    resource.createAdmin,
 );
 
 module.exports = router;
