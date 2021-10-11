@@ -10,6 +10,14 @@ const authenticationHandler = require('../middlewares/authentication-handler');
 
 const resource = require('../controllers/recipes.controllers');
 
+router.get(
+    '/:id',
+    resource.get);
+
+router.get(
+    '',
+    resource.list);
+
 router.post(
     '',  
     authenticationHandler,

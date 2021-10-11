@@ -1,13 +1,19 @@
 const FunctionalErrorException = require('../utilities/exceptions/functional-error-exception');
+const { ERROR_MSG_RECIPE_NOT_FOUND } = require('../utilities/constants/error-messages');
 
 const Recipe = require('../models/recipe.models');
 
-const get = async ({ name, email, password, role }) => {
+const get = async (_id) => {
+    var recipe = await Recipe.findOne({_id});
+    if (recipe) {
+        return recipe;
+    }
 
+    throw new FunctionalErrorException(ERROR_MSG_RECIPE_NOT_FOUND);
 };
 
-const list = async ({ name, email, password, role }) => {
-
+const list = async () => {
+    return await Recipe.find();
 };
 
 const create = async ({ name, ingredients, preparation }, userId) => {
@@ -22,15 +28,15 @@ const create = async ({ name, ingredients, preparation }, userId) => {
     };
 };
 
-const edit = async ({ name, email, password, role }) => {
+const edit = async () => {
 
 };
 
-const addImage = async ({ name, email, password, role }) => {
+const addImage = async () => {
 
 };
 
-const getImage = async ({ name, email, password, role }) => {
+const getImage = async () => {
 
 };
 

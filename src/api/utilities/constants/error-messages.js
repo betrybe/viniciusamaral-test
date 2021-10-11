@@ -42,14 +42,11 @@ const ERROR_MSG_USER_ALREADY_EXISTS = {
 };
 
 
-
-
-
-
-
-
-
-
+// Recipe - Get
+const ERROR_MSG_RECIPE_NOT_FOUND = {
+    httpStatus: 400,
+    message: 'recipe not found'
+};
 
 
 module.exports = {
@@ -67,5 +64,8 @@ module.exports = {
     ERROR_MSG_INCORRECT_TOKEN,
     
     // User - Creation
-    ERROR_MSG_USER_ALREADY_EXISTS
+    ERROR_MSG_USER_ALREADY_EXISTS,
+
+    // Recipe - Get
+    ERROR_MSG_RECIPE_NOT_FOUND
 };

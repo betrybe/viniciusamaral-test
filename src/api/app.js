@@ -17,8 +17,8 @@ app.get('/', (request, response) => {
 });
 
 app.use("/login", loginRoutes);
-app.use("/user", userRoutes);
-app.use("/recipe", recipeRoutes);
+app.use("/users", userRoutes);
+app.use("/recipes", recipeRoutes);
 
 app.use(errorHandler);
 
