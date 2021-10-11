@@ -1,7 +1,7 @@
 const express = require('express');
 require('express-async-errors'); 
 
-path = require('path')
+const path = require('path');
 
 const loginRoutes = require('./routes/login.routes');
 const userRoutes = require('./routes/users.routes');

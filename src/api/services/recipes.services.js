@@ -43,7 +43,7 @@ const runCommonValidations = async (recipeId, userId, userRole) => {
         throw new FunctionalErrorException(ERROR_MSG_RECIPE_NOT_FOUND);
     }
 
-    if (recipe.userId != userId && userRole !== ROLES.ADMIN) {
+    if (recipe.userId !== userId && userRole !== ROLES.ADMIN) {
         throw new FunctionalErrorException(ERROR_MSG_INCORRECT_TOKEN);
     }
 };
@@ -91,10 +91,6 @@ const addImage = async (recipeId, userId, userRole, image) => {
     };
 };
 
-const getImage = async () => {
-
-};
-
 module.exports = { 
     get, 
     list,
@@ -102,5 +98,4 @@ module.exports = {
     update,
     erase,
     addImage,
-    getImage,
 };

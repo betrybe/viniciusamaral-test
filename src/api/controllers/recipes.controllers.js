@@ -38,10 +38,6 @@ const addImage = async (req, res) => {
     return res.status(200).json(result);
 };
 
-const getImage = async (req, res) => {
-    return res.status(204);
-};
-
 module.exports = { 
     list,
     get,
@@ -49,5 +45,4 @@ module.exports = {
     update,
     erase,
     addImage,
-    getImage,
 };
