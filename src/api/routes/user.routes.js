@@ -8,7 +8,7 @@ const { ERROR_MSG_INVALID_ENTRIES, ERROR_MSG_LOGIN_INVALID_EMAIL } = require('..
 const validationHandler = require('../middlewares/validation-handler');
 const authenticationHandler = require('../middlewares/authentication-handler');
 
-const resource = require('../controllers/user.controllers');
+const resource = require('../controllers/users.controllers');
 
 router.post(
     '',  
