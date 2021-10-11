@@ -27,6 +27,17 @@ router.post(
             body('ingredients').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
             body('preparation').exists().withMessage(ERROR_MSG_INVALID_ENTRIES)
         ]),
-    resource.create);
+    resource.insert);
+
+router.put(
+    '/:id',  
+    authenticationHandler,
+    validationHandler.validate(
+        [
+            body('name').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
+            body('ingredients').exists().withMessage(ERROR_MSG_INVALID_ENTRIES), 
+            body('preparation').exists().withMessage(ERROR_MSG_INVALID_ENTRIES)
+        ]),
+    resource.update);
 
 module.exports = router;

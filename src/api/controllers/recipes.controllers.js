@@ -12,14 +12,16 @@ const get = async (req, res, next) => {
     return res.status(200).json(result);
 };
 
-const create = async (req, res, next) => {
-    const result = await recipesService.create(req.body, req.user.id);
+const insert = async (req, res, next) => {
+    const result = await recipesService.insert(req.body, req.user.id);
 
     return res.status(201).json(result);
 };
 
-const edit = async (req, res, next) => {
-    return res.status(204);
+const update = async (req, res, next) => {
+    const result = await recipesService.update(req.params.id, req.body, req.user.id, req.user.role);
+    
+    return res.status(200).json(result);
 };
 
 const addImage = async (req, res, next) => {
@@ -33,8 +35,8 @@ const getImage = async (req, res, next) => {
 module.exports = { 
     list,
     get,
-    create,
-    edit,
+    insert,
+    update,
     addImage,
     getImage
 };

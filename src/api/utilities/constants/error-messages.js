@@ -35,14 +35,14 @@ const ERROR_MSG_INCORRECT_TOKEN = {
 };
 
 
-// User - Creation
+// User
 const ERROR_MSG_USER_ALREADY_EXISTS = {
     httpStatus: 409,
     message: 'Email already registered'
 };
 
 
-// Recipe - Get
+// Recipe
 const ERROR_MSG_RECIPE_NOT_FOUND = {
     httpStatus: 400,
     message: 'recipe not found'
@@ -63,9 +63,9 @@ module.exports = {
     ERROR_MSG_LOGIN_MISSING_TOKEN,
     ERROR_MSG_INCORRECT_TOKEN,
     
-    // User - Creation
+    // User
     ERROR_MSG_USER_ALREADY_EXISTS,
 
-    // Recipe - Get
+    // Recipe
     ERROR_MSG_RECIPE_NOT_FOUND
 };
