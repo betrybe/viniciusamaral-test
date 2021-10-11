@@ -1,5 +1,8 @@
 const FunctionalErrorException = require('../utilities/exceptions/functional-error-exception');
-const { ERROR_MSG_USER_ALREADY_EXISTS, ERROR_MSG_LOGIN_INVALID } = require('../utilities/constants/error-messages');
+const { 
+    ERROR_MSG_USER_ALREADY_EXISTS, 
+    ERROR_MSG_LOGIN_INVALID, 
+} = require('../utilities/constants/error-messages');
 
 const User = require('../models/user.models');
 
@@ -32,5 +35,5 @@ const authenticate = async ({ email, password }) => {
 
 module.exports = { 
     create, 
-    authenticate 
+    authenticate,
 };

@@ -18,5 +18,5 @@ const MONGO_DB_URL = `mongodb://${MONGO_DB_SERVER}:27017/Cookmaster`;
 module.exports = {
     TOKEN,
     ROLES,
-    MONGO_DB_URL
+    MONGO_DB_URL,
 };

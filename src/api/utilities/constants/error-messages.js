@@ -1,53 +1,52 @@
 const ERROR_MSG_GENERIC = {
     httpStatus: 500,
-    message: 'An unexpected error has ocurred'
+    message: 'An unexpected error has ocurred',
 };
-
 
 // General
 const ERROR_MSG_INVALID_ENTRIES = {
     httpStatus: 400,
-    message: 'Invalid entries. Try again.'
+    message: 'Invalid entries. Try again.',
 };
-
 
 // Login - Generate token
 const ERROR_MSG_LOGIN_EMPTY_FIELDS = {
     httpStatus: 401,
-    message: 'All fields must be filed'
+    message: 'All fields must be filed',
 };
 
 const ERROR_MSG_LOGIN_INVALID = {
     httpStatus: 401,
-    message: 'Incorret username or password'
+    message: 'Incorret username or password',
 };
-
 
 // Login - Validate Token
 const ERROR_MSG_LOGIN_MISSING_TOKEN = {
     httpStatus: 401,
-    message: 'missing auth token'
+    message: 'missing auth token',
 };
 
 const ERROR_MSG_INCORRECT_TOKEN = {
     httpStatus: 401,
-    message: 'jwt malformed'
+    message: 'jwt malformed',
 };
-
 
 // User
 const ERROR_MSG_USER_ALREADY_EXISTS = {
     httpStatus: 409,
-    message: 'Email already registered'
+    message: 'Email already registered',
 };
-
 
 // Recipe
 const ERROR_MSG_RECIPE_NOT_FOUND = {
     httpStatus: 400,
-    message: 'recipe not found'
+    message: 'recipe not found',
 };
 
+const ERROR_MSG_RECIPE_ALREADY_EXISTS = {
+    httpStatus: 400,
+    message: 'recipe already registered',
+};
 
 module.exports = {
     ERROR_MSG_GENERIC,
@@ -67,5 +66,6 @@ module.exports = {
     ERROR_MSG_USER_ALREADY_EXISTS,
 
     // Recipe
-    ERROR_MSG_RECIPE_NOT_FOUND
+    ERROR_MSG_RECIPE_ALREADY_EXISTS,
+    ERROR_MSG_RECIPE_NOT_FOUND,
 };

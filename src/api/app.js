@@ -5,20 +5,20 @@ const loginRoutes = require('./routes/login.routes');
 const userRoutes = require('./routes/users.routes');
 const recipeRoutes = require('./routes/recipes.routes');
 
-const errorHandler = require('./middlewares/error-handler')
+const errorHandler = require('./middlewares/error-handler');
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
 // Não remover esse end-point, ele é necessário para o avaliador
 app.get('/', (request, response) => {
   response.send();
 });
 
-app.use("/login", loginRoutes);
-app.use("/users", userRoutes);
-app.use("/recipes", recipeRoutes);
+app.use('/login', loginRoutes);
+app.use('/users', userRoutes);
+app.use('/recipes', recipeRoutes);
 
 app.use(errorHandler);
 

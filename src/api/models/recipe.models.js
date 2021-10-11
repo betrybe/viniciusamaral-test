@@ -5,28 +5,24 @@ const recipeSchema = new Schema({
             type: String,
             unique: true,
             required: true,
-            index: true
+            index: true,
         },
         userId: {
             type: Schema.Types.ObjectId,
             required: true,
-            unique: true,
             index: true,
-            ref: 'users'
+            ref: 'users',
         },
         ingredients: {
             type: String,
-            required: true
+            required: true,
         },
         preparation: {
             type: String,
-            required: true
+            required: true,
         },
-        preparation: {
-            type: String
-        }
-    },{ 
-        versionKey: false 
+    }, { 
+        versionKey: false,
     });
 
 module.exports = model('recipes', recipeSchema);
