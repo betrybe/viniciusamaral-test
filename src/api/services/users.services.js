@@ -3,7 +3,7 @@ const { ERROR_MSG_USER_ALREADY_EXISTS, ERROR_MSG_LOGIN_INVALID } = require('../u
 
 const User = require('../models/user.models');
 
-const tokenService = require('../services/token.services');
+const tokenService = require('./token.services');
 
 const create = async ({ name, email, password, role }) => {
     const alreadyExistingUser = await User.findOne({ email });

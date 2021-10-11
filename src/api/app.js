@@ -2,7 +2,8 @@ const express = require('express');
 require('express-async-errors'); 
 
 const loginRoutes = require('./routes/login.routes');
-const userRoutes = require('./routes/user.routes');
+const userRoutes = require('./routes/users.routes');
+const recipeRoutes = require('./routes/recipes.routes');
 
 const errorHandler = require('./middlewares/error-handler')
 
@@ -17,6 +18,7 @@ app.get('/', (request, response) => {
 
 app.use("/login", loginRoutes);
 app.use("/user", userRoutes);
+app.use("/recipe", recipeRoutes);
 
 app.use(errorHandler);
 

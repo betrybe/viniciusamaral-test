@@ -1,4 +1,4 @@
-const userService = require('../services/user.services');
+const userService = require('../services/users.services');
 
 const authenticate = async (req, res, next) => {
     const token = await userService.authenticate(req.body);
