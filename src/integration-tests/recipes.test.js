@@ -18,6 +18,8 @@ const {
     ERROR_MSG_RECIPE_NOT_FOUND,
 } = require('../api/utilities/constants/message-constants');
 
+const { UPLOAD_DIRECTORY } = require('../api/config/constants/settings')
+
 describe('3 - Recipes', () => {
     let connection;
     let db;
@@ -175,6 +177,52 @@ describe('3 - Recipes', () => {
                 .send(newRecipeData)
                 .end((err, res) => {
                     res.should.have.status(204);  
+                    done();
+                });
+        });
+    });
+
+    describe('PUT /recipes/:id/image', () => {
+        const route = '/recipes/:id/image';
+
+        beforeEach(() => {
+            recipeInfo = recipesStub.getRecipe();
+        }); 
+
+        it('should be possible to update a recipe image.', (done) => {
+            const userId = userStub.getNormalUser()._id;
+            recipeInfo.userId = userId;
+            db.collection('recipes').insertOne(recipeInfo);
+
+            requester
+                .put(route.replace(':id', recipeInfo._id))
+                .set({ 'Authorization': userStub.getNormalUserToken(), 'content-type': 'multipart/form-data' })
+                .attach('image', `${__dirname}/../uploads/ratinho.jpg`)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.have.property('_id').equal(recipeInfo._id.toString());
+                    res.body.should.have.property('name').equal(recipeInfo.name);
+                    res.body.should.have.property('ingredients').equal(recipeInfo.ingredients);
+                    res.body.should.have.property('preparation').equal(recipeInfo.preparation);
+                    res.body.should.have.property('image').equal(`${url.replace('http://', '')}/${UPLOAD_DIRECTORY}/${recipeInfo._id.toString()}.jpeg`);
+                    done();
+                });
+        });
+    });
+
+    describe('GET /image/:id', () => {
+        const route = '/images/:id';
+
+        beforeEach(() => {
+            recipeInfo = recipesStub.getRecipe();
+        }); 
+
+        it('should be possible to get a recipe image.', (done) => {
+            requester
+                .get(route.replace(':id', 'ratinho.jpg'))
+                .set({ 'Authorization': userStub.getNormalUserToken() })
+                .end((err, res) => {
+                    res.should.have.status(200);
                     done();
                 });
         });
