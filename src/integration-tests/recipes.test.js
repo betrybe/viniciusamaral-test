@@ -1,3 +1,5 @@
+const app = require('../api/server');
+
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
@@ -5,6 +7,7 @@ chai.should();
 
 const mongoDbUrl = 'mongodb://localhost:27017/Cookmaster';
 const url = 'http://localhost:3000';
+var requester = chai.request.agent(url);
 
 const { MongoClient } = require('mongodb');
 
@@ -47,7 +50,7 @@ describe('3 - Recipes', () => {
         it('should be possible to list recipes.', (done) => {
             db.collection('recipes').insertMany(listOfRecipes);
 
-            chai.request(url)
+            requester
                 .get(route)
                 .end((err, res) => {
                     res.should.have.status(200);  
@@ -67,7 +70,7 @@ describe('3 - Recipes', () => {
         it('should not be possible to get an unexisting recipe.', (done) => {
             const recipeId = recipeInfo._id.toString();
 
-            chai.request(url)
+            requester
                 .get(route.replace(':id', recipeId))
                 .end((err, res) => {
                     res.should.have.status(ERROR_MSG_RECIPE_NOT_FOUND.httpStatus);  
@@ -79,7 +82,7 @@ describe('3 - Recipes', () => {
         it('should not be possible to get a recipe passing an invalid recipe id.', (done) => {
             const recipeId = '123456';
 
-            chai.request(url)
+            requester
                 .get(route.replace(':id', recipeId))
                 .end((err, res) => {
                     res.should.have.status(ERROR_MSG_RECIPE_NOT_FOUND.httpStatus);  
@@ -91,7 +94,7 @@ describe('3 - Recipes', () => {
         it('should be possible to get a specific recipe.', (done) => {
             db.collection('recipes').insertOne(recipeInfo);
             
-            chai.request(url)
+            requester
                 .get(route.replace(':id', recipeInfo._id.toString()))
                 .end((err, res) => {
                     res.should.have.status(200);  
@@ -109,7 +112,7 @@ describe('3 - Recipes', () => {
         }); 
 
         it('should be possible to insert a new recipe.', (done) => {
-            chai.request(url)
+            requester
                 .post(route)
                 .set({ 'Authorization': userStub.getAdminUserToken() })
                 .send(recipeInfo)
@@ -140,7 +143,7 @@ describe('3 - Recipes', () => {
             newRecipeData.ingredients = 'new-recipe-ingredients';
             newRecipeData.preparation = 'new-recipe-preparation';
 
-            chai.request(url)
+            requester
                 .put(route.replace(':id', recipeInfo._id))
                 .set({ 'Authorization': userStub.getNormalUserToken() })
                 .send(newRecipeData)
@@ -166,7 +169,7 @@ describe('3 - Recipes', () => {
             recipeInfo.userId = userId;
             db.collection('recipes').insertOne(recipeInfo);
 
-            chai.request(url)
+            requester
                 .delete(route.replace(':id', recipeInfo._id))
                 .set({ 'Authorization': userStub.getNormalUserToken() })
                 .send(newRecipeData)

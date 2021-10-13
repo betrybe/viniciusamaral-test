@@ -1,3 +1,4 @@
+const app = require('../api/server');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
@@ -5,6 +6,7 @@ chai.should();
 
 const mongoDbUrl = 'mongodb://localhost:27017/Cookmaster';
 const url = 'http://localhost:3000';
+var requester = chai.request.agent(url);
 
 const { MongoClient } = require('mongodb');
 
@@ -48,7 +50,7 @@ describe('2 - Login', () => {
                 password: userInfo.password
             };
 
-            chai.request(url)
+            requester
                 .post(route)
                 .send(loginInfo)
                 .end((err, res) => {
@@ -63,7 +65,7 @@ describe('2 - Login', () => {
                 email: userInfo.email
             };
 
-            chai.request(url)
+            requester
                 .post(route)
                 .send(loginInfo)
                 .end((err, res) => {
@@ -79,7 +81,7 @@ describe('2 - Login', () => {
                 password: userInfo.password
             };
 
-            chai.request(url)
+            requester
                 .post(route)
                 .send(loginInfo)
                 .end((err, res) => {
@@ -95,7 +97,7 @@ describe('2 - Login', () => {
                 password: userInfo.password
             };
 
-            chai.request(url)
+            requester
                 .post(route)
                 .send(loginInfo)
                 .end((err, res) => {
@@ -113,7 +115,7 @@ describe('2 - Login', () => {
 
             db.collection('users').insertOne(userInfo);
 
-            chai.request(url)
+            requester
                 .post(route)
                 .send(loginInfo)
                 .end((err, res) => {

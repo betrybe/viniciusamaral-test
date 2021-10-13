@@ -1,3 +1,5 @@
+const app = require('../api/server');
+
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
@@ -5,6 +7,7 @@ chai.should();
 
 const mongoDbUrl = 'mongodb://localhost:27017/Cookmaster';
 const url = 'http://localhost:3000';
+var requester = chai.request.agent(url);
 
 const { MongoClient } = require('mongodb');
 
@@ -48,7 +51,7 @@ describe('1 - Users', () => {
     it('should not be possible to insert a new user with "name" field missing.', (done) => {
       delete userInfo.name;
   
-      chai.request(url)
+      requester
         .post(route)
         .send(userInfo)
         .end((err, res) => {
@@ -61,7 +64,7 @@ describe('1 - Users', () => {
     it('should not be possible to insert a new user with "email" field missing.', (done) => {
       delete userInfo.email;
   
-      chai.request(url)
+      requester
         .post(route)
         .send(userInfo)
         .end((err, res) => {
@@ -74,7 +77,7 @@ describe('1 - Users', () => {
     it('should not be possible to insert a new user with "password" field missing.', (done) => {
       delete userInfo.password;
   
-      chai.request(url)
+      requester
         .post(route)
         .send(userInfo)
         .end((err, res) => {
@@ -87,7 +90,7 @@ describe('1 - Users', () => {
     it('should not be possible to insert a new  with an invalid "email".', (done) => {
       userInfo.email = "vinicius.com";
   
-      chai.request(url)
+      requester
         .post(route)
         .send(userInfo)
         .end((err, res) => {
@@ -100,7 +103,7 @@ describe('1 - Users', () => {
     it('should not be possible to insert a new with an already registered "email".', (done) => {
       db.collection('users').insertOne(userInfo);
   
-      chai.request(url)
+      requester
         .post(route)
         .send(userInfo)
         .end((err, res) => {
@@ -111,7 +114,7 @@ describe('1 - Users', () => {
     });
   
     it('should be possible to insert a new user.', (done) => {
-      chai.request(url)
+      requester
         .post(route)
         .send(userInfo)
         .end((err, res) => {
@@ -132,7 +135,7 @@ describe('1 - Users', () => {
     });
 
     it('should not be possible to insert a new admin user without being logged in.', (done) => {
-      chai.request(url)
+      requester
         .post(route)
         .send(userInfo)
         .end((err, res) => {
@@ -143,7 +146,7 @@ describe('1 - Users', () => {
     });
 
     it('should not be possible to insert a new admin user logged in as a normal user.', (done) => {
-      chai.request(url)
+      requester
         .post(route)
         .set({ 'Authorization': userStub.getNormalUserToken() })
         .send(userInfo)
@@ -155,7 +158,7 @@ describe('1 - Users', () => {
     });
 
     it('should be possible to insert a new admin user.', (done) => {
-      chai.request(url)
+      requester
         .post(route)
         .set({ 'Authorization': userStub.getAdminUserToken() })
         .send(userInfo)
