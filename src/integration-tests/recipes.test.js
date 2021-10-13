@@ -16,7 +16,7 @@ const userStub = require('./stubs/users.stubs');
 
 const { 
     ERROR_MSG_RECIPE_NOT_FOUND,
-} = require('../api/utilities/constants/error-messages');
+} = require('../api/utilities/constants/message-constants');
 
 describe('3 - Recipes', () => {
     let connection;

@@ -2,7 +2,7 @@ const FunctionalErrorException = require('../utilities/exceptions/functional-err
 const { 
     ERROR_MSG_USER_ALREADY_EXISTS, 
     ERROR_MSG_INVALID_LOGIN, 
-} = require('../utilities/constants/error-messages');
+} = require('../utilities/constants/message-constants');
 
 const User = require('../models/user.models');
 

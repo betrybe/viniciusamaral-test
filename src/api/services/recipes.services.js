@@ -3,7 +3,7 @@ const {
     ERROR_MSG_RECIPE_NOT_FOUND, 
     ERROR_MSG_INCORRECT_TOKEN, 
     ERROR_MSG_RECIPE_ALREADY_EXISTS,
-} = require('../utilities/constants/error-messages');
+} = require('../utilities/constants/message-constants');
 
 const { ROLES } = require('../config/constants/settings');
 

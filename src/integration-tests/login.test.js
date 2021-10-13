@@ -15,7 +15,7 @@ const userStub = require('./stubs/users.stubs');
 const { 
     ERROR_MSG_LOGIN_EMPTY_FIELDS,
     ERROR_MSG_INVALID_LOGIN,
-  } = require('../api/utilities/constants/error-messages');
+  } = require('../api/utilities/constants/message-constants');
 
 describe('2 - Login', () => {
     let connection;

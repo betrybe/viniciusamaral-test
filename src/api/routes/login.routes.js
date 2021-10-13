@@ -6,7 +6,7 @@ const router = express.Router();
 const { 
     ERROR_MSG_LOGIN_EMPTY_FIELDS, 
     ERROR_MSG_INVALID_LOGIN, 
-} = require('../utilities/constants/error-messages');
+} = require('../utilities/constants/message-constants');
 const validationHandler = require('../middlewares/validation-handler');
 
 const resource = require('../controllers/login.controllers');

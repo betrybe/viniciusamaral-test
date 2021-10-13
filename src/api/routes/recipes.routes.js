@@ -12,7 +12,7 @@ const router = express.Router();
 
 const { 
     ERROR_MSG_INVALID_ENTRIES,
-} = require('../utilities/constants/error-messages');
+} = require('../utilities/constants/message-constants');
 
 const customValidators = require('../utilities/validation/custom-validators');
 

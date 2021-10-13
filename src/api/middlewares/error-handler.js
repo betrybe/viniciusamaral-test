@@ -1,5 +1,5 @@
 const FunctionalErrorException = require('../utilities/exceptions/functional-error-exception');
-const { ERROR_MSG_GENERIC } = require('../utilities/constants/error-messages');
+const { ERROR_MSG_GENERIC } = require('../utilities/constants/message-constants');
 
 const errorHandler = (err, req, res, _) => {
     if (err instanceof FunctionalErrorException) {

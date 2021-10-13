@@ -18,7 +18,7 @@ const {
   ERROR_MSG_LOGIN_MISSING_TOKEN,
   ERROR_MSG_USER_ALREADY_EXISTS,
   ERROR_MSG_ONLY_ADMINS_ACTION,
-} = require('../api/utilities/constants/error-messages');
+} = require('../api/utilities/constants/message-constants');
 
 describe('1 - Users', () => {
   let connection;

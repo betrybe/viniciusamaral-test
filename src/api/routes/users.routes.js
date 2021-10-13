@@ -3,7 +3,7 @@ const { body } = require('express-validator');
 
 const router = express.Router();
 
-const { ERROR_MSG_INVALID_ENTRIES } = require('../utilities/constants/error-messages');
+const { ERROR_MSG_INVALID_ENTRIES } = require('../utilities/constants/message-constants');
 
 const validationHandler = require('../middlewares/validation-handler');
 const { 

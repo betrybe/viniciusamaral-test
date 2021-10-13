@@ -4,7 +4,7 @@ const FunctionalErrorException = require('../utilities/exceptions/functional-err
 const { 
     ERROR_MSG_LOGIN_MISSING_TOKEN, 
     ERROR_MSG_INCORRECT_TOKEN,
-} = require('../utilities/constants/error-messages');
+} = require('../utilities/constants/message-constants');
 
 const { TOKEN } = require('../config/constants/settings');
 
