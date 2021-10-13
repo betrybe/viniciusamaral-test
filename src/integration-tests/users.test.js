@@ -7,7 +7,8 @@ const mongoDbUrl = 'mongodb://localhost:27017/Cookmaster';
 const url = 'http://localhost:3000';
 
 const { MongoClient } = require('mongodb');
-const jwt = require('jsonwebtoken');
+
+const userStub = require('./stubs/user.stubs');
 
 const { 
   ERROR_MSG_INVALID_ENTRIES, 
@@ -15,8 +16,6 @@ const {
   ERROR_MSG_USER_ALREADY_EXISTS,
   ERROR_MSG_ONLY_ADMINS_ACTION,
 } = require('../api/utilities/constants/error-messages');
-
-const userStub = require('./stubs/user.stubs');
 
 describe('1 - Users', () => {
   let connection;
@@ -33,7 +32,6 @@ describe('1 - Users', () => {
 
   beforeEach(async () => {
     await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
   });
 
   after(async () => {
@@ -41,6 +39,8 @@ describe('1 - Users', () => {
   });
 
   describe('POST /users', () => {
+    const route = '/users';
+
     beforeEach(() => {
       userInfo = userStub.getNormalUser();
     });
@@ -49,7 +49,7 @@ describe('1 - Users', () => {
       delete userInfo.name;
   
       chai.request(url)
-        .post('/users')
+        .post(route)
         .send(userInfo)
         .end((err, res) => {
           res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
@@ -62,7 +62,7 @@ describe('1 - Users', () => {
       delete userInfo.email;
   
       chai.request(url)
-        .post('/users')
+        .post(route)
         .send(userInfo)
         .end((err, res) => {
           res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
@@ -75,7 +75,7 @@ describe('1 - Users', () => {
       delete userInfo.password;
   
       chai.request(url)
-        .post('/users')
+        .post(route)
         .send(userInfo)
         .end((err, res) => {
           res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
@@ -88,7 +88,7 @@ describe('1 - Users', () => {
       userInfo.email = "vinicius.com";
   
       chai.request(url)
-        .post('/users')
+        .post(route)
         .send(userInfo)
         .end((err, res) => {
           res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
@@ -101,7 +101,7 @@ describe('1 - Users', () => {
       db.collection('users').insertOne(userInfo);
   
       chai.request(url)
-        .post('/users')
+        .post(route)
         .send(userInfo)
         .end((err, res) => {
           res.should.have.status(ERROR_MSG_USER_ALREADY_EXISTS.httpStatus);  
@@ -112,7 +112,7 @@ describe('1 - Users', () => {
   
     it('should be possible to insert a new user.', (done) => {
       chai.request(url)
-        .post('/users')
+        .post(route)
         .send(userInfo)
         .end((err, res) => {
           res.should.have.status(201); 
@@ -125,13 +125,15 @@ describe('1 - Users', () => {
   });
 
   describe('POST /users/admin', () => {
+    const route = '/users/admin';
+
     beforeEach(() => {
       userInfo = userStub.getAdminUser();
     });
 
     it('should not be possible to insert a new admin user without being logged in.', (done) => {
       chai.request(url)
-        .post('/users/admin')
+        .post(route)
         .send(userInfo)
         .end((err, res) => {
           res.should.have.status(ERROR_MSG_LOGIN_MISSING_TOKEN.httpStatus);
@@ -142,7 +144,7 @@ describe('1 - Users', () => {
 
     it('should not be possible to insert a new admin user logged in as a normal user.', (done) => {
       chai.request(url)
-        .post('/users/admin')
+        .post(route)
         .set({ 'Authorization': userStub.getNormalUserToken() })
         .send(userInfo)
         .end((err, res) => {
@@ -154,7 +156,7 @@ describe('1 - Users', () => {
 
     it('should be possible to insert a new admin user.', (done) => {
       chai.request(url)
-        .post('/users/admin')
+        .post(route)
         .set({ 'Authorization': userStub.getAdminUserToken() })
         .send(userInfo)
         .end((err, res) => {
