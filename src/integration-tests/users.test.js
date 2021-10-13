@@ -12,14 +12,16 @@ const jwt = require('jsonwebtoken');
 const { 
   ERROR_MSG_INVALID_ENTRIES, 
   ERROR_MSG_LOGIN_MISSING_TOKEN,
-  ERROR_MSG_ONLY_ADMINS_ACTION 
+  ERROR_MSG_USER_ALREADY_EXISTS,
+  ERROR_MSG_ONLY_ADMINS_ACTION,
 } = require('../api/utilities/constants/error-messages');
 
-describe('POST /users', () => {
+const userStub = require('./stubs/user.stubs');
+
+describe('1 - Users', () => {
   let connection;
   let db;
-
-  let userInfo = {};
+  let userInfo;
 
   before(async () => {
     connection = await MongoClient.connect(mongoDbUrl, {
@@ -30,12 +32,6 @@ describe('POST /users', () => {
   });
 
   beforeEach(async () => {
-    userInfo = {
-      "name": "vinicius2",
-      "email": "vinicius.amaral@gmail.com",
-      "password": "12345"
-    };
-
     await db.collection('users').deleteMany({});
     await db.collection('recipes').deleteMany({});
   });
@@ -45,7 +41,11 @@ describe('POST /users', () => {
   });
 
   describe('POST /users', () => {
-    it('Será validado que não é possível incluir um usuário sem o campo "nome".', (done) => {
+    beforeEach(() => {
+      userInfo = userStub.getNormalUser();
+    });
+
+    it('should not be possible to insert a new user with "name" field missing.', (done) => {
       delete userInfo.name;
   
       chai.request(url)
@@ -58,7 +58,7 @@ describe('POST /users', () => {
         });
     });
   
-    it('Será validado que não é possível incluir um usuário sem o campo "email".', (done) => {
+    it('should not be possible to insert a new user with "email" field missing.', (done) => {
       delete userInfo.email;
   
       chai.request(url)
@@ -71,7 +71,7 @@ describe('POST /users', () => {
         });
     });
   
-    it('Será validado que não é possível incluir um usuário sem o campo "password".', (done) => {
+    it('should not be possible to insert a new user with "password" field missing.', (done) => {
       delete userInfo.password;
   
       chai.request(url)
@@ -84,7 +84,7 @@ describe('POST /users', () => {
         });
     });
   
-    it('Será validado que não é possível incluir um usuário com email inválido.', (done) => {
+    it('should not be possible to insert a new  with an invalid "email".', (done) => {
       userInfo.email = "vinicius.com";
   
       chai.request(url)
@@ -96,33 +96,72 @@ describe('POST /users', () => {
           done();
         });
     });
+
+    it('should not be possible to insert a new with an already registered "email".', (done) => {
+      db.collection('users').insertOne(userInfo);
   
-    it('Será validado que é possível incluir um user com sucesso.', (done) => {
       chai.request(url)
         .post('/users')
         .send(userInfo)
         .end((err, res) => {
-          res.should.have.status(201);  
+          res.should.have.status(ERROR_MSG_USER_ALREADY_EXISTS.httpStatus);  
+          res.body.should.have.property('message').equal(ERROR_MSG_USER_ALREADY_EXISTS.message);
+          done();
+        });
+    });
+  
+    it('should be possible to insert a new user.', (done) => {
+      chai.request(url)
+        .post('/users')
+        .send(userInfo)
+        .end((err, res) => {
+          res.should.have.status(201); 
+          res.body.should.have.property('user').that.has.property('name').equal(userInfo.name);
+          res.body.should.have.property('user').that.has.property('email').equal(userInfo.email);
+          res.body.should.have.property('user').that.has.property('email').equal(userInfo.email); 
           done();
         });
     });
   });
 
   describe('POST /users/admin', () => {
-    beforeEach(async () => {
-      const users = {
-        name: 'admin', email: 'root@email.com', password: 'admin', role: 'admin' };
-      await db.collection('users').insertOne(users);
+    beforeEach(() => {
+      userInfo = userStub.getAdminUser();
     });
 
-    it('Será validado que não é possível incluir um usuário adminstrador sem estar autenticado.', (done) => {
+    it('should not be possible to insert a new admin user without being logged in.', (done) => {
       chai.request(url)
         .post('/users/admin')
         .send(userInfo)
         .end((err, res) => {
-          console.log(res);
           res.should.have.status(ERROR_MSG_LOGIN_MISSING_TOKEN.httpStatus);
           res.body.should.have.property('message').equal(ERROR_MSG_LOGIN_MISSING_TOKEN.message);
+          done();
+        });
+    });
+
+    it('should not be possible to insert a new admin user logged in as a normal user.', (done) => {
+      chai.request(url)
+        .post('/users/admin')
+        .set({ 'Authorization': userStub.getNormalUserToken() })
+        .send(userInfo)
+        .end((err, res) => {
+          res.should.have.status(ERROR_MSG_ONLY_ADMINS_ACTION.httpStatus);
+          res.body.should.have.property('message').equal(ERROR_MSG_ONLY_ADMINS_ACTION.message);
+          done();
+        });
+    });
+
+    it('should be possible to insert a new admin user.', (done) => {
+      chai.request(url)
+        .post('/users/admin')
+        .set({ 'Authorization': userStub.getAdminUserToken() })
+        .send(userInfo)
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.have.property('user').that.has.property('name').equal(userInfo.name);
+          res.body.should.have.property('user').that.has.property('email').equal(userInfo.email);
+          res.body.should.have.property('user').that.has.property('email').equal(userInfo.email);
           done();
         });
     });
