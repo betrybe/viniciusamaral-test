@@ -6,21 +6,21 @@ const tokenService = require('../services/token.services');
 const { ROLES } = require('../config/constants/settings');
 
 const authenticationHandler = (req, res, next) => {
-	const userToken = tokenService.validate(req.headers.authorization);
-  	req.user = userToken;
+    const userToken = tokenService.validate(req.headers.authorization);
+    req.user = userToken;
 
-  	next();
+    next();
 };
 
 const isAdminAuthenticationHandler = (req, res, next) => {
-  	if (req.user.role !== ROLES.ADMIN) {
-    	throw new FunctionalErrorException(ERROR_MSG_ONLY_ADMINS_ACTION);
-  	}
+    if (req.user.role !== ROLES.ADMIN) {
+        throw new FunctionalErrorException(ERROR_MSG_ONLY_ADMINS_ACTION);
+    }
 
-  	next();
+    next();
 };
 
 module.exports = { 
-  	authenticationHandler,
-  	isAdminAuthenticationHandler,
+    authenticationHandler,
+    isAdminAuthenticationHandler,
 };
