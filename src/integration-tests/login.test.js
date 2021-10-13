@@ -8,7 +8,7 @@ const url = 'http://localhost:3000';
 
 const { MongoClient } = require('mongodb');
 
-const userStub = require('./stubs/user.stubs');
+const userStub = require('./stubs/users.stubs');
 
 const { 
     ERROR_MSG_LOGIN_EMPTY_FIELDS,

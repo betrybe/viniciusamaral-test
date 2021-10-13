@@ -9,6 +9,7 @@ const url = 'http://localhost:3000';
 const { MongoClient } = require('mongodb');
 
 const recipesStub = require('./stubs/recipes.stubs');
+const userStub = require('./stubs/users.stubs');
 
 const { 
     ERROR_MSG_RECIPE_NOT_FOUND,
@@ -95,6 +96,82 @@ describe('3 - Recipes', () => {
                 .end((err, res) => {
                     res.should.have.status(200);  
                     res.body.should.have.property('_id').equal(recipeInfo._id.toString());
+                    done();
+                });
+        });
+    });
+
+    describe('POST /recipes', () => {
+        const route = '/recipes';
+
+        beforeEach(() => {
+            recipeInfo = recipesStub.getRecipe();
+        }); 
+
+        it('should be possible to insert a new recipe.', (done) => {
+            chai.request(url)
+                .post(route)
+                .set({ 'Authorization': userStub.getAdminUserToken() })
+                .send(recipeInfo)
+                .end((err, res) => {
+                    res.should.have.status(201);  
+                    res.body.should.have.property('recipe').that.has.property('name').equal(recipeInfo.name);
+                    res.body.should.have.property('recipe').that.has.property('ingredients').equal(recipeInfo.ingredients);
+                    res.body.should.have.property('recipe').that.has.property('preparation').equal(recipeInfo.preparation);
+                    done();
+                });
+        });
+    });
+
+    describe('PUT /recipes/:id', () => {
+        const route = '/recipes/:id';
+
+        beforeEach(() => {
+            recipeInfo = recipesStub.getRecipe();
+        }); 
+
+        it('should be possible to update a recipe.', (done) => {
+            const userId = userStub.getNormalUser()._id;
+            recipeInfo.userId = userId;
+            db.collection('recipes').insertOne(recipeInfo);
+
+            newRecipeData = recipesStub.getRecipe();
+            newRecipeData.name = 'new-recipe-name';
+            newRecipeData.ingredients = 'new-recipe-ingredients';
+            newRecipeData.preparation = 'new-recipe-preparation';
+
+            chai.request(url)
+                .put(route.replace(':id', recipeInfo._id))
+                .set({ 'Authorization': userStub.getNormalUserToken() })
+                .send(newRecipeData)
+                .end((err, res) => {
+                    res.should.have.status(200);  
+                    res.body.should.have.property('name').equal(newRecipeData.name);
+                    res.body.should.have.property('ingredients').equal(newRecipeData.ingredients);
+                    res.body.should.have.property('preparation').equal(newRecipeData.preparation);
+                    done();
+                });
+        });
+    });
+
+    describe('DELETE /recipes/:id', () => {
+        const route = '/recipes/:id';
+
+        beforeEach(() => {
+            recipeInfo = recipesStub.getRecipe();
+        }); 
+
+        it('should be possible to delete a recipe.', (done) => {
+            const userId = userStub.getNormalUser()._id;
+            recipeInfo.userId = userId;
+            db.collection('recipes').insertOne(recipeInfo);
+
+            chai.request(url)
+                .delete(route.replace(':id', recipeInfo._id))
+                .set({ 'Authorization': userStub.getNormalUserToken() })
+                .send(newRecipeData)
+                .end((err, res) => {
+                    res.should.have.status(204);  
                     done();
                 });
         });

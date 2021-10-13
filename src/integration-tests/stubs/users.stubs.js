@@ -1,7 +1,10 @@
+var mongoose = require('mongoose');
+
 const { ROLES } = require('../../api/config/constants/settings');
 
 const getNormalUser = () => {
     return {
+        _id: mongoose.Types.ObjectId('6166e1ad7fdce13176f4c13a'),
         name: 'user',
         email: 'user@email.com',
         password: '12345',
@@ -15,6 +18,7 @@ const getNormalUserToken = () => {
 
 const getAdminUser = () => {
     return {
+        _id: mongoose.Types.ObjectId('6166d9b3d2a49e17f1964c3c'),
         name: 'admin', 
         email: 'admin@email.com', 
         password: 'admin', 
