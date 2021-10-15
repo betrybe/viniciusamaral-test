@@ -26,19 +26,19 @@ describe('1 - Users', () => {
   let userInfo;
 
   before(async () => {
-    // connection = await MongoClient.connect(mongoDbUrl, {
-    //   useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    // });
-    // db = connection.db('Cookmaster');
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('Cookmaster');
   });
 
   beforeEach(async () => {
-    //await db.collection('users').deleteMany({});
+    await db.collection('users').deleteMany({});
   });
 
   after(async () => {
-    //await connection.close();
+    await connection.close();
   });
 
   describe('POST /users', () => {
@@ -100,17 +100,17 @@ describe('1 - Users', () => {
         });
     });
 
-    // it('should not be possible to insert a new user with an already registered "email".', async () => {
-    //   await db.collection('users').insertOne(userInfo);
+    it('should not be possible to insert a new user with an already registered "email".', async () => {
+      await db.collection('users').insertOne(userInfo);
   
-    //   requester
-    //     .post(route)
-    //     .send(userInfo)
-    //     .end((err, res) => {
-    //       res.should.have.status(ERROR_MSG_USER_ALREADY_EXISTS.httpStatus);  
-    //       res.body.should.have.property('message').equal(ERROR_MSG_USER_ALREADY_EXISTS.message);
-    //     });
-    // });
+      requester
+        .post(route)
+        .send(userInfo)
+        .end((err, res) => {
+          res.should.have.status(ERROR_MSG_USER_ALREADY_EXISTS.httpStatus);  
+          res.body.should.have.property('message').equal(ERROR_MSG_USER_ALREADY_EXISTS.message);
+        });
+    });
   
     it('should be possible to insert a new user.', (done) => {
       requester
