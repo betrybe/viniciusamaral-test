@@ -23,19 +23,19 @@ describe('2 - Login', () => {
     let userInfo;
 
     before(async () => {
-        connection = await MongoClient.connect(mongoDbUrl, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        });
-        db = connection.db('Cookmaster');
+        // connection = await MongoClient.connect(mongoDbUrl, {
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true,
+        // });
+        // db = connection.db('Cookmaster');
     });
 
     beforeEach(async () => {
-        await db.collection('users').deleteMany({});
+        //await db.collection('users').deleteMany({});
     });
 
     after(async () => {
-        await connection.close();
+        //await connection.close();
     });
 
     describe('POST /login', () => {
