@@ -23,20 +23,20 @@ describe('2 - Login', () => {
     let userInfo;
 
     before(async () => {
-        // connection = await MongoClient.connect(mongoDbUrl, {
-        // useNewUrlParser: true,
-        // useUnifiedTopology: true,
-        // });
-        // db = connection.db('Cookmaster');
+        connection = await MongoClient.connect(mongoDbUrl, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        });
+        db = connection.db('Cookmaster');
     });
 
     beforeEach(async () => {
-        //await db.collection('users').deleteMany({});
-        //await db.collection('recipes').deleteMany({});
+        await db.collection('users').deleteMany({});
+        await db.collection('recipes').deleteMany({});
     });
 
     after(async () => {
-        //await connection.close();
+        await connection.close();
     });
 
     describe('POST /login', () => {
@@ -107,21 +107,21 @@ describe('2 - Login', () => {
                 });
         });
 
-        // it('should not be possible to log in.', async () => {
-        //     const loginInfo = {
-        //         email: userInfo.email,
-        //         password: userInfo.password
-        //     };
+        it('should not be possible to log in.', async () => {
+            const loginInfo = {
+                email: userInfo.email,
+                password: userInfo.password
+            };
 
-        //     await db.collection('users').insertOne(userInfo);
+            await db.collection('users').insertOne(userInfo);
 
-        //     requester
-        //         .post(route)
-        //         .send(loginInfo)
-        //         .end((err, res) => {
-        //             res.should.have.status(200);  
-        //             res.body.should.have.property('token');
-        //         });
-        // });
+            requester
+                .post(route)
+                .send(loginInfo)
+                .end((err, res) => {
+                    res.should.have.status(200);  
+                    res.body.should.have.property('token');
+                });
+        });
     });
 });
