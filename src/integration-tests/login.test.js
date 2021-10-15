@@ -106,21 +106,21 @@ describe('2 - Login', () => {
                 });
         });
 
-        it('should not be possible to log in.', async () => {
-            const loginInfo = {
-                email: userInfo.email,
-                password: userInfo.password
-            };
+        // it('should not be possible to log in.', async () => {
+        //     const loginInfo = {
+        //         email: userInfo.email,
+        //         password: userInfo.password
+        //     };
 
-            await db.collection('users').insertOne(userInfo);
+        //     await db.collection('users').insertOne(userInfo);
 
-            requester
-                .post(route)
-                .send(loginInfo)
-                .end((err, res) => {
-                    res.should.have.status(200);  
-                    res.body.should.have.property('token');
-                });
-        });
+        //     requester
+        //         .post(route)
+        //         .send(loginInfo)
+        //         .end((err, res) => {
+        //             res.should.have.status(200);  
+        //             res.body.should.have.property('token');
+        //         });
+        // });
     });
 });
