@@ -4,7 +4,7 @@ const { ROLES } = require('../../api/config/constants/settings');
 
 const getNormalUser = () => {
     return {
-        _id: mongoose.Types.ObjectId('6166e1ad7fdce13176f4c13a'),
+        _id: mongoose.Types.ObjectId('6169d84d5ba9bad14f5001f9'),
         name: 'user',
         email: 'user@email.com',
         password: '12345',
@@ -13,7 +13,7 @@ const getNormalUser = () => {
 };
 
 const getNormalUserToken = () => {
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNjZlMWFkN2ZkY2UxMzE3NmY0YzEzYSIsImVtYWlsIjoidXNlckBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTYzNDEzMjQwOSwiZXhwIjoxNjM0MTY4NDA5LCJzdWIiOiI2MTY2ZTFhZDdmZGNlMTMxNzZmNGMxM2EifQ.JcvWVITKE_lkjxy50QaNQ6CZnyYqdiPQv9DXOLfcZMY';
+    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNjlkODRkNWJhOWJhZDE0ZjUwMDFmOSIsImVtYWlsIjoidXNlckBlbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTYzNDMyNjYwOCwiZXhwIjoyNDk4MzI2NjA4LCJzdWIiOiI2MTY5ZDg0ZDViYTliYWQxNGY1MDAxZjkifQ.8hhtDeXZEnEi9w4A77Y1oJ2DA4sLNAIQRz8DrFXU1yU';
 };
 
 const getAdminUser = () => {
