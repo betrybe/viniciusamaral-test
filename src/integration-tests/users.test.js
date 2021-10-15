@@ -27,6 +27,8 @@ describe('1 - Users', () => {
 
   before(async () => {
     connection = await MongoClient.connect(mongoDbUrl, {
+      connectTimeoutMS: 3000,
+      serverSelectionTimeoutMS: 3000,
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -35,6 +37,7 @@ describe('1 - Users', () => {
 
   beforeEach(async () => {
     await db.collection('users').deleteMany({});
+    await db.collection('recipes').deleteMany({});
   });
 
   after(async () => {
@@ -100,17 +103,17 @@ describe('1 - Users', () => {
         });
     });
 
-    // it('should not be possible to insert a new user with an already registered "email".', async () => {
-    //   await db.collection('users').insertOne(userInfo);
+    it('should not be possible to insert a new user with an already registered "email".', async () => {
+      await db.collection('users').insertOne(userInfo);
   
-    //   requester
-    //     .post(route)
-    //     .send(userInfo)
-    //     .end((err, res) => {
-    //       res.should.have.status(ERROR_MSG_USER_ALREADY_EXISTS.httpStatus);  
-    //       res.body.should.have.property('message').equal(ERROR_MSG_USER_ALREADY_EXISTS.message);
-    //     });
-    // });
+      requester
+        .post(route)
+        .send(userInfo)
+        .end((err, res) => {
+          res.should.have.status(ERROR_MSG_USER_ALREADY_EXISTS.httpStatus);  
+          res.body.should.have.property('message').equal(ERROR_MSG_USER_ALREADY_EXISTS.message);
+        });
+    });
   
     it('should be possible to insert a new user.', (done) => {
       requester
