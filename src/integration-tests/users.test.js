@@ -48,59 +48,59 @@ describe('1 - Users', () => {
       userInfo = userStub.getNormalUser();
     });
 
-    it('should not be possible to insert a new user with "name" field missing.', (done) => {
-      delete userInfo.name;
+    // it('should not be possible to insert a new user with "name" field missing.', (done) => {
+    //   delete userInfo.name;
   
-      requester
-        .post(route)
-        .send(userInfo)
-        .end((err, res) => {
-          res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
-          res.body.should.have.property('message').equal(ERROR_MSG_INVALID_ENTRIES.message);
-          done();
-        });
-    });
+    //   requester
+    //     .post(route)
+    //     .send(userInfo)
+    //     .end((err, res) => {
+    //       res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
+    //       res.body.should.have.property('message').equal(ERROR_MSG_INVALID_ENTRIES.message);
+    //       done();
+    //     });
+    // });
   
-    it('should not be possible to insert a new user with "email" field missing.', (done) => {
-      delete userInfo.email;
+    // it('should not be possible to insert a new user with "email" field missing.', (done) => {
+    //   delete userInfo.email;
   
-      requester
-        .post(route)
-        .send(userInfo)
-        .end((err, res) => {
-          res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
-          res.body.should.have.property('message').equal(ERROR_MSG_INVALID_ENTRIES.message);
-          done();
-        });
-    });
+    //   requester
+    //     .post(route)
+    //     .send(userInfo)
+    //     .end((err, res) => {
+    //       res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
+    //       res.body.should.have.property('message').equal(ERROR_MSG_INVALID_ENTRIES.message);
+    //       done();
+    //     });
+    // });
   
-    it('should not be possible to insert a new user with "password" field missing.', (done) => {
-      delete userInfo.password;
+    // it('should not be possible to insert a new user with "password" field missing.', (done) => {
+    //   delete userInfo.password;
   
-      requester
-        .post(route)
-        .send(userInfo)
-        .end((err, res) => {
-          res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
-          res.body.should.have.property('message').equal(ERROR_MSG_INVALID_ENTRIES.message);
-          done();
-        });
-    });
+    //   requester
+    //     .post(route)
+    //     .send(userInfo)
+    //     .end((err, res) => {
+    //       res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
+    //       res.body.should.have.property('message').equal(ERROR_MSG_INVALID_ENTRIES.message);
+    //       done();
+    //     });
+    // });
   
-    it('should not be possible to insert a new  with an invalid "email".', (done) => {
-      userInfo.email = "vinicius.com";
+    // it('should not be possible to insert a new  with an invalid "email".', (done) => {
+    //   userInfo.email = "vinicius.com";
   
-      requester
-        .post(route)
-        .send(userInfo)
-        .end((err, res) => {
-          res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
-          res.body.should.have.property('message').equal(ERROR_MSG_INVALID_ENTRIES.message);
-          done();
-        });
-    });
+    //   requester
+    //     .post(route)
+    //     .send(userInfo)
+    //     .end((err, res) => {
+    //       res.should.have.status(ERROR_MSG_INVALID_ENTRIES.httpStatus);  
+    //       res.body.should.have.property('message').equal(ERROR_MSG_INVALID_ENTRIES.message);
+    //       done();
+    //     });
+    // });
 
-    it('should not be possible to insert a new with an already registered "email".', (done) => {
+    it('should not be possible to insert a new user with an already registered "email".', (done) => {
       db.collection('users').insertOne(userInfo);
   
       requester
@@ -113,6 +113,7 @@ describe('1 - Users', () => {
         });
     });
   
+    /*
     it('should be possible to insert a new user.', (done) => {
       requester
         .post(route)
@@ -124,9 +125,10 @@ describe('1 - Users', () => {
           res.body.should.have.property('user').that.has.property('email').equal(userInfo.email); 
           done();
         });
-    });
+    });*/
   });
 
+  /*
   describe('POST /users/admin', () => {
     const route = '/users/admin';
 
@@ -170,5 +172,5 @@ describe('1 - Users', () => {
           done();
         });
     });
-  });
+  });*/
 });
