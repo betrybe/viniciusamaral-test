@@ -1,5 +1,4 @@
 const { validationResult } = require('express-validator');
-const { ERROR_MSG_GENERIC } = require('../utilities/constants/message-constants');
 
 const validate = (validations) => async (req, res, next) => {
     const promises = [];
