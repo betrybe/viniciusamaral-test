@@ -10,6 +10,10 @@ const userStub = require('./stubs/users.stubs');
 
 const app = require('../api/server');
 
+const userModel = require('../api/models/user.models');
+const recipesModel = require('../api/models/user.models');
+const settings = require('../api/config/constants/settings')
+
 const { 
   ERROR_MSG_INVALID_ENTRIES, 
   ERROR_MSG_LOGIN_MISSING_TOKEN,
@@ -48,6 +52,10 @@ describe('1 - Users', function() {
 
     beforeEach(() => {
       userInfo = userStub.getNormalUser();
+
+      const a = userModel.userSchema;
+      const b = recipesModel.recipeSchema;
+      const c = settings.TOKEN;
     });
 
     it('should not be possible to insert a new user with "name" field missing.', (done) => {
