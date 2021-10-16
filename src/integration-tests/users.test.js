@@ -110,7 +110,7 @@ describe('1 - Users', () => {
         .post(route)
         .send(userInfo);
         
-      res.should.have.status(293);  
+      res.should.have.status(ERROR_MSG_USER_ALREADY_EXISTS.httpStatus);  
       res.body.should.have.property('message').equal(ERROR_MSG_USER_ALREADY_EXISTS.message);
     });
   

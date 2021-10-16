@@ -26,41 +26,40 @@ describe('3 - Recipes', () => {
     let recipeInfo;
     let listOfRecipes;
 
-    // before(async () => {
-    //     connection = await MongoClient.connect(mongoDbUrl, {
-    //         useNewUrlParser: true,
-    //         useUnifiedTopology: true,
-    //     });
-    //     db = connection.db('Cookmaster');
-    // });
+    before(async () => {
+        connection = await MongoClient.connect(mongoDbUrl, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        db = connection.db('Cookmaster');
+    });
 
-    // beforeEach(async () => {
-    //     await db.collection('users').deleteMany({});
-    //     await db.collection('recipes').deleteMany({});
-    // });
+    beforeEach(async () => {
+        await db.collection('users').deleteMany({});
+        await db.collection('recipes').deleteMany({});
+    });
 
-    // after(async () => {
-    //     await connection.close();
-    // });
+    after(async () => {
+        await connection.close();
+    });
 
-    // describe('GET /recipes', () => {
-    //     const route = '/recipes';
+    describe('GET /recipes', () => {
+        const route = '/recipes';
 
-    //     beforeEach(() => {
-    //         listOfRecipes = recipesStub.getListOfRecipes();
-    //     });          
+        beforeEach(() => {
+            listOfRecipes = recipesStub.getListOfRecipes();
+        });          
 
-    //     it('should be possible to list recipes.', async () => {
-    //         await db.collection('recipes').insertMany(listOfRecipes);
+        it('should be possible to list recipes.', async () => {
+            await db.collection('recipes').insertMany(listOfRecipes);
 
-    //         requester
-    //             .get(route)
-    //             .end((err, res) => {
-    //                 res.should.have.status(200);  
-    //                 res.body.should.have.lengthOf(listOfRecipes.length);
-    //             });
-    //     });
-    // });
+            res = await requester
+                .get(route);
+
+            res.should.have.status(200);  
+            res.body.should.have.lengthOf(listOfRecipes.length);
+        });
+    });
 
     describe('GET /recipes/:id', () => {
         const route = '/recipes/:id';
@@ -93,15 +92,14 @@ describe('3 - Recipes', () => {
                 });
         });
 
-        // it('should be possible to get a specific recipe.', async () => {
-        //     await db.collection('recipes').insertOne(recipeInfo);
+        it('should be possible to get a specific recipe.', async () => {
+            await db.collection('recipes').insertOne(recipeInfo);
             
-        //     requester
-        //         .get(route.replace(':id', recipeInfo._id.toString()))
-        //         .end((err, res) => {
-        //             res.should.have.status(200);  
-        //         });
-        // });
+            var res = await requester
+                .get(route.replace(':id', recipeInfo._id.toString()));
+
+            res.should.have.status(200);  
+        });
     });
 
     describe('POST /recipes', () => {
@@ -126,87 +124,81 @@ describe('3 - Recipes', () => {
         });
     });
 
-    // describe('PUT /recipes/:id', () => {
-    //     const route = '/recipes/:id';
+    describe('PUT /recipes/:id', () => {
+        const route = '/recipes/:id';
 
-    //     beforeEach(() => {
-    //         recipeInfo = recipesStub.getRecipe();
-    //     }); 
+        beforeEach(() => {
+            recipeInfo = recipesStub.getRecipe();
+        }); 
 
-    //     it('should be possible to update a recipe.', (done) => {
-    //         const userId = userStub.getNormalUser()._id;
-    //         recipeInfo.userId = userId;
-    //         db.collection('recipes').insertOne(recipeInfo);
+        it('should be possible to update a recipe.', async () => {
+            const userId = userStub.getNormalUser()._id;
+            recipeInfo.userId = userId;
+            await db.collection('recipes').insertOne(recipeInfo);
 
-    //         newRecipeData = recipesStub.getRecipe();
-    //         newRecipeData.name = 'new-recipe-name';
-    //         newRecipeData.ingredients = 'new-recipe-ingredients';
-    //         newRecipeData.preparation = 'new-recipe-preparation';
+            newRecipeData = recipesStub.getRecipe();
+            newRecipeData.name = 'new-recipe-name';
+            newRecipeData.ingredients = 'new-recipe-ingredients';
+            newRecipeData.preparation = 'new-recipe-preparation';
 
-    //         requester
-    //             .put(route.replace(':id', recipeInfo._id))
-    //             .set({ 'Authorization': userStub.getNormalUserToken() })
-    //             .send(newRecipeData)
-    //             .end((err, res) => {
-    //                 res.should.have.status(200);  
-    //                 res.body.should.have.property('name').equal(newRecipeData.name);
-    //                 res.body.should.have.property('ingredients').equal(newRecipeData.ingredients);
-    //                 res.body.should.have.property('preparation').equal(newRecipeData.preparation);
-    //                 done();
-    //             });
-    //     });
-    // });
+            res = await requester
+                .put(route.replace(':id', recipeInfo._id))
+                .set({ 'Authorization': userStub.getNormalUserToken() })
+                .send(newRecipeData);
 
-    // describe('DELETE /recipes/:id', () => {
-    //     const route = '/recipes/:id';
+            res.should.have.status(200);  
+            res.body.should.have.property('name').equal(newRecipeData.name);
+            res.body.should.have.property('ingredients').equal(newRecipeData.ingredients);
+            res.body.should.have.property('preparation').equal(newRecipeData.preparation);
+        });
+    });
 
-    //     beforeEach(() => {
-    //         recipeInfo = recipesStub.getRecipe();
-    //     }); 
+    describe('DELETE /recipes/:id', () => {
+        const route = '/recipes/:id';
 
-    //     it('should be possible to delete a recipe.', (done) => {
-    //         const userId = userStub.getNormalUser()._id;
-    //         recipeInfo.userId = userId;
-    //         db.collection('recipes').insertOne(recipeInfo);
+        beforeEach(() => {
+            recipeInfo = recipesStub.getRecipe();
+        }); 
 
-    //         requester
-    //             .delete(route.replace(':id', recipeInfo._id))
-    //             .set({ 'Authorization': userStub.getNormalUserToken() })
-    //             .send(newRecipeData)
-    //             .end((err, res) => {
-    //                 res.should.have.status(204);  
-    //                 done();
-    //             });
-    //     });
-    // });
+        it('should be possible to delete a recipe.', async () => {
+            const userId = userStub.getNormalUser()._id;
+            recipeInfo.userId = userId;
+            await db.collection('recipes').insertOne(recipeInfo);
 
-    // describe('PUT /recipes/:id/image', () => {
-    //     const route = '/recipes/:id/image';
+            res = await requester
+                .delete(route.replace(':id', recipeInfo._id))
+                .set({ 'Authorization': userStub.getNormalUserToken() })
+                .send(newRecipeData);
 
-    //     beforeEach(() => {
-    //         recipeInfo = recipesStub.getRecipe();
-    //     }); 
+            res.should.have.status(204);
+        });
+    });
 
-    //     it('should be possible to update a recipe image.', (done) => {
-    //         const userId = userStub.getNormalUser()._id;
-    //         recipeInfo.userId = userId;
-    //         db.collection('recipes').insertOne(recipeInfo);
+    describe('PUT /recipes/:id/image', async () => {
+        const route = '/recipes/:id/image';
 
-    //         requester
-    //             .put(route.replace(':id', recipeInfo._id))
-    //             .set({ 'Authorization': userStub.getNormalUserToken(), 'content-type': 'multipart/form-data' })
-    //             .attach('image', `${__dirname}/../uploads/ratinho.jpg`)
-    //             .end((err, res) => {
-    //                 res.should.have.status(200);
-    //                 res.body.should.have.property('_id').equal(recipeInfo._id.toString());
-    //                 res.body.should.have.property('name').equal(recipeInfo.name);
-    //                 res.body.should.have.property('ingredients').equal(recipeInfo.ingredients);
-    //                 res.body.should.have.property('preparation').equal(recipeInfo.preparation);
-    //                 res.body.should.have.property('image').equal(`${url.replace('http://', '')}/${UPLOAD_DIRECTORY}/${recipeInfo._id.toString()}.jpeg`);
-    //                 done();
-    //             });
-    //     });
-    // });
+        beforeEach(() => {
+            recipeInfo = recipesStub.getRecipe();
+        }); 
+
+        it('should be possible to update a recipe image.', async () => {
+            const userId = userStub.getNormalUser()._id;
+            recipeInfo.userId = userId;
+            await db.collection('recipes').insertOne(recipeInfo);
+
+            res = await requester
+                .put(route.replace(':id', recipeInfo._id))
+                .set({ 'Authorization': userStub.getNormalUserToken(), 'content-type': 'multipart/form-data' })
+                .attach('image', `${__dirname}/../uploads/ratinho.jpg`);
+            
+            res.should.have.status(200);
+            res.body.should.have.property('_id').equal(recipeInfo._id.toString());
+            res.body.should.have.property('name').equal(recipeInfo.name);
+            res.body.should.have.property('ingredients').equal(recipeInfo.ingredients);
+            res.body.should.have.property('preparation').equal(recipeInfo.preparation);
+            res.body.should.have.property('image').equal(`${url.replace('http://', '')}/${UPLOAD_DIRECTORY}/${recipeInfo._id.toString()}.jpeg`);
+        });
+    });
 
     describe('GET /image/:id', () => {
         const route = '/images/:id';

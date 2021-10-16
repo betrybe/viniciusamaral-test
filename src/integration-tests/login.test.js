@@ -22,22 +22,22 @@ describe('2 - Login', () => {
     let db;
     let userInfo;
 
-    // before(async () => {
-    //     connection = await MongoClient.connect(mongoDbUrl, {
-    //     useNewUrlParser: true,
-    //     useUnifiedTopology: true,
-    //     });
-    //     db = connection.db('Cookmaster');
-    // });
+    before(async () => {
+        connection = await MongoClient.connect(mongoDbUrl, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        });
+        db = connection.db('Cookmaster');
+    });
 
-    // beforeEach(async () => {
-    //     await db.collection('users').deleteMany({});
-    //     await db.collection('recipes').deleteMany({});
-    // });
+    beforeEach(async () => {
+        await db.collection('users').deleteMany({});
+        await db.collection('recipes').deleteMany({});
+    });
 
-    // after(async () => {
-    //     await connection.close();
-    // });
+    after(async () => {
+        await connection.close();
+    });
 
     describe('POST /login', () => {
         const route = '/login';
@@ -107,21 +107,20 @@ describe('2 - Login', () => {
                 });
         });
 
-        // it('should be possible to log in.', async () => {
-        //     const loginInfo = {
-        //         email: userInfo.email,
-        //         password: userInfo.password
-        //     };
+        it('should be possible to log in.', async () => {
+            const loginInfo = {
+                email: userInfo.email,
+                password: userInfo.password
+            };
 
-        //     await db.collection('users').insertOne(userInfo);
+            await db.collection('users').insertOne(userInfo);
 
-        //     requester
-        //         .post(route)
-        //         .send(loginInfo)
-        //         .end((err, res) => {
-        //             res.should.have.status(200);  
-        //             res.body.should.have.property('token');
-        //         });
-        // });
+            res = await requester
+                .post(route)
+                .send(loginInfo);
+
+            res.should.have.status(200);  
+            res.body.should.have.property('token');
+        });
     });
 });
