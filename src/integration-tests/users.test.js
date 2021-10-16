@@ -17,17 +17,13 @@ const {
   ERROR_MSG_ONLY_ADMINS_ACTION,
 } = require('../api/utilities/constants/message-constants');
 
-describe('1 - Users', function() {
+describe('1 - Users', () => {
   let connection;
   let db;
   let userInfo;
 
-  this.timeout(60000);
-
   before(async () => {
     connection = await MongoClient.connect(MONGO_DB_URL, {
-      connectTimeoutMS: 3000,
-      serverSelectionTimeoutMS: 3000,
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -118,7 +114,7 @@ describe('1 - Users', function() {
   
     it('should be possible to insert a new user.', (done) => {
       userInfo.email = 'new-unique-user@email.com'
-      
+
       chai
         .request(app)
         .post(route)

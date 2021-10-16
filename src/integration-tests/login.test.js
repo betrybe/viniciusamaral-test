@@ -15,12 +15,10 @@ const {
     ERROR_MSG_INVALID_LOGIN,
   } = require('../api/utilities/constants/message-constants');
 
-describe('2 - Login', function() {
+describe('2 - Login', () => {
     let connection;
     let db;
     let userInfo;
-
-    this.timeout(60000);
 
     before(async () => {
         connection = await MongoClient.connect(MONGO_DB_URL, {
