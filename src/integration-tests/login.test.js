@@ -33,6 +33,9 @@ describe('2 - Login', () => {
     beforeEach(async () => {
         await db.collection('users').deleteMany({});
         await db.collection('recipes').deleteMany({});
+
+        userInfo = userStub.getNormalUser();
+        await db.collection('users').insertOne(userInfo);
     });
 
     after(async () => {
@@ -40,11 +43,7 @@ describe('2 - Login', () => {
     });
 
     describe('POST /login', () => {
-        const route = '/login';
-
-        beforeEach(() => {
-            userInfo = userStub.getNormalUser();
-        });          
+        const route = '/login';       
 
         it('should not be possible to log in without passing "email".', (done) => {
             const loginInfo = {
@@ -107,20 +106,20 @@ describe('2 - Login', () => {
                 });
         });
 
-        it('should be possible to log in.', async () => {
+        it('should be possible to log in.', (done) => {
             const loginInfo = {
                 email: userInfo.email,
                 password: userInfo.password
             };
 
-            await db.collection('users').insertOne(userInfo);
-
-            res = await requester
+            requester
                 .post(route)
-                .send(loginInfo);
-
-            res.should.have.status(200);  
-            res.body.should.have.property('token');
+                .send(loginInfo)
+                .end((err, res) => {
+                    res.should.have.status(200);  
+                    res.body.should.have.property('token');
+                    done();
+                });
         });
     });
 });
