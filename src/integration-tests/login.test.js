@@ -22,22 +22,22 @@ describe('2 - Login', () => {
     let db;
     let userInfo;
 
-    before(async () => {
-        connection = await MongoClient.connect(mongoDbUrl, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        });
-        db = connection.db('Cookmaster');
-    });
+    // before(async () => {
+    //     connection = await MongoClient.connect(mongoDbUrl, {
+    //     useNewUrlParser: true,
+    //     useUnifiedTopology: true,
+    //     });
+    //     db = connection.db('Cookmaster');
+    // });
 
-    beforeEach(async () => {
-        await db.collection('users').deleteMany({});
-        await db.collection('recipes').deleteMany({});
-    });
+    // beforeEach(async () => {
+    //     await db.collection('users').deleteMany({});
+    //     await db.collection('recipes').deleteMany({});
+    // });
 
-    after(async () => {
-        await connection.close();
-    });
+    // after(async () => {
+    //     await connection.close();
+    // });
 
     describe('POST /login', () => {
         const route = '/login';
@@ -94,8 +94,8 @@ describe('2 - Login', () => {
 
         it('should not be possible to log in with an inexisting user.', async () => {
             const loginInfo = {
-                email: userInfo.email,
-                password: userInfo.password
+                email: 'unexisting-user@email.com',
+                password: '12345'
             };
 
             requester
@@ -107,7 +107,7 @@ describe('2 - Login', () => {
                 });
         });
 
-        // it('should not be possible to log in.', async () => {
+        // it('should be possible to log in.', async () => {
         //     const loginInfo = {
         //         email: userInfo.email,
         //         password: userInfo.password

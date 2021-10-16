@@ -26,22 +26,22 @@ describe('3 - Recipes', () => {
     let recipeInfo;
     let listOfRecipes;
 
-    before(async () => {
-        connection = await MongoClient.connect(mongoDbUrl, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        db = connection.db('Cookmaster');
-    });
+    // before(async () => {
+    //     connection = await MongoClient.connect(mongoDbUrl, {
+    //         useNewUrlParser: true,
+    //         useUnifiedTopology: true,
+    //     });
+    //     db = connection.db('Cookmaster');
+    // });
 
-    beforeEach(async () => {
-        await db.collection('users').deleteMany({});
-        await db.collection('recipes').deleteMany({});
-    });
+    // beforeEach(async () => {
+    //     await db.collection('users').deleteMany({});
+    //     await db.collection('recipes').deleteMany({});
+    // });
 
-    after(async () => {
-        await connection.close();
-    });
+    // after(async () => {
+    //     await connection.close();
+    // });
 
     // describe('GET /recipes', () => {
     //     const route = '/recipes';

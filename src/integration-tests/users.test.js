@@ -25,24 +25,24 @@ describe('1 - Users', () => {
   let db;
   let userInfo;
 
-  before(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
-      connectTimeoutMS: 3000,
-      serverSelectionTimeoutMS: 3000,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    db = connection.db('Cookmaster');
-  });
+  // before(async () => {
+  //   connection = await MongoClient.connect(mongoDbUrl, {
+  //     connectTimeoutMS: 3000,
+  //     serverSelectionTimeoutMS: 3000,
+  //     useNewUrlParser: true,
+  //     useUnifiedTopology: true,
+  //   });
+  //   db = connection.db('Cookmaster');
+  // });
 
-  beforeEach(async () => {
-    await db.collection('users').deleteMany({});
-    await db.collection('recipes').deleteMany({});
-  });
+  // beforeEach(async () => {
+  //   await db.collection('users').deleteMany({});
+  //   await db.collection('recipes').deleteMany({});
+  // });
 
-  after(async () => {
-    await connection.close();
-  });
+  // after(async () => {
+  //   await connection.close();
+  // });
 
   describe('POST /users', () => {
     const route = '/users';
