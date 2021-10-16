@@ -11,7 +11,7 @@ const validate = (validations) => async (req, res, next) => {
         return next();
     }
   
-    const finalError = errors.array().length > 0 ? errors.array()[0] : ERROR_MSG_GENERIC;
+    const finalError = errors.array()[0];
     res.status(finalError.msg.httpStatus).json({ message: finalError.msg.message });
 };
 
