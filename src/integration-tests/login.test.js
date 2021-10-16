@@ -15,7 +15,7 @@ const {
     ERROR_MSG_INVALID_LOGIN,
   } = require('../api/utilities/constants/message-constants');
 
-describe('2 - Login', () => {
+describe('2 - Login', function() {
     let connection;
     let db;
     let userInfo;

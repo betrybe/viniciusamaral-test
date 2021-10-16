@@ -17,7 +17,7 @@ const {
   ERROR_MSG_ONLY_ADMINS_ACTION,
 } = require('../api/utilities/constants/message-constants');
 
-describe('1 - Users', () => {
+describe('1 - Users', function() {
   let connection;
   let db;
   let userInfo;

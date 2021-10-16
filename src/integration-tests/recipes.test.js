@@ -17,7 +17,7 @@ const {
 
 const { UPLOAD_DIRECTORY } = require('../api/config/constants/settings')
 
-describe('3 - Recipes', () => {
+describe('3 - Recipes', function() {
     let connection;
     let db;
     let recipeInfo;
