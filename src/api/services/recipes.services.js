@@ -22,9 +22,6 @@ const list = async () => Recipe.find();
 
 const insert = async ({ name, ingredients, preparation }, userId) => {
     const recipe = await Recipe.findOne({ name });
-    if (recipe) {
-        throw new FunctionalErrorException(ERROR_MSG_RECIPE_ALREADY_EXISTS);
-    }
     
     const newRecipe = await Recipe.create({ name, ingredients, preparation, userId });
     

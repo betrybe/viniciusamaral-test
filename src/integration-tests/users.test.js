@@ -37,6 +37,9 @@ describe('1 - Users', function() {
   beforeEach(async () => {
     await db.collection('users').deleteMany({});
     await db.collection('recipes').deleteMany({});
+
+    userInfo = userStub.getNormalUser();
+    await db.collection('users').insertOne(userInfo);
   });
 
   after(async () => {
@@ -45,10 +48,6 @@ describe('1 - Users', function() {
 
   describe('POST /users', () => {
     const route = '/users';
-
-    beforeEach(() => {
-      userInfo = userStub.getNormalUser();
-    });
 
     it('should not be possible to insert a new user with "name" field missing.', (done) => {
       delete userInfo.name;
@@ -106,19 +105,20 @@ describe('1 - Users', function() {
         });
     });
 
-    // it('should not be possible to insert a new user with an already registered "email".', async () => {
-    //   await db.collection('users').insertOne(userInfo);
-  
-    //   chai
-     //   .request(app)
-    //     .post(route)
-    //     .send(userInfo);
-        
-    //   res.should.have.status(ERROR_MSG_USER_ALREADY_EXISTS.httpStatus);  
-    //   res.body.should.have.property('message').equal(ERROR_MSG_USER_ALREADY_EXISTS.message);
-    // });
+    it('should not be possible to insert a new user with an already registered "email".', async () => {
+      chai
+        .request(app)
+        .post(route)
+        .send(userInfo)
+        .end((_, res) => {
+          res.should.have.status(ERROR_MSG_USER_ALREADY_EXISTS.httpStatus);  
+          res.body.should.have.property('message').equal(ERROR_MSG_USER_ALREADY_EXISTS.message);
+        });
+    });
   
     it('should be possible to insert a new user.', (done) => {
+      userInfo.email = 'new-unique-user@email.com'
+      
       chai
         .request(app)
         .post(route)
