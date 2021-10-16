@@ -20,11 +20,13 @@ const {
 
 const { UPLOAD_DIRECTORY } = require('../api/config/constants/settings')
 
-describe('3 - Recipes', () => {
+describe('3 - Recipes', function() {
     let connection;
     let db;
     let recipeInfo;
     let listOfRecipes;
+
+    this.timeout(60000);
 
     before(async () => {
         connection = await MongoClient.connect(mongoDbUrl, {
