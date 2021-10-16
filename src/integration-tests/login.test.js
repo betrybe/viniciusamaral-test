@@ -1,16 +1,14 @@
-const app = require('../api/server');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 chai.should();
 
 const mongoDbUrl = 'mongodb://mongodb:27017/Cookmaster';
-const url = 'http://localhost:3000';
-var requester = chai.request.agent(url);
-
 const { MongoClient } = require('mongodb');
 
 const userStub = require('./stubs/users.stubs');
+
+const app = require('../api/server');
 
 const { 
     ERROR_MSG_LOGIN_EMPTY_FIELDS,
@@ -52,7 +50,8 @@ describe('2 - Login', function() {
                 password: userInfo.password
             };
 
-            requester
+            chai
+                .request(app)
                 .post(route)
                 .send(loginInfo)
                 .end((err, res) => {
@@ -67,7 +66,8 @@ describe('2 - Login', function() {
                 email: userInfo.email
             };
 
-            requester
+            chai
+                .request(app)
                 .post(route)
                 .send(loginInfo)
                 .end((err, res) => {
@@ -83,7 +83,8 @@ describe('2 - Login', function() {
                 password: userInfo.password
             };
 
-            requester
+            chai
+                .request(app)
                 .post(route)
                 .send(loginInfo)
                 .end((err, res) => {
@@ -99,7 +100,8 @@ describe('2 - Login', function() {
                 password: '12345'
             };
 
-            requester
+            chai
+                .request(app)
                 .post(route)
                 .send(loginInfo)
                 .end((err, res) => {
@@ -114,7 +116,8 @@ describe('2 - Login', function() {
                 password: userInfo.password
             };
 
-            requester
+            chai
+                .request(app)
                 .post(route)
                 .send(loginInfo)
                 .end((err, res) => {

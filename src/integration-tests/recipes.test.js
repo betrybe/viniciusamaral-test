@@ -1,18 +1,15 @@
-const app = require('../api/server');
-
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 chai.should();
 
 const mongoDbUrl = 'mongodb://mongodb:27017/Cookmaster';
-const url = 'http://localhost:3000';
-var requester = chai.request.agent(url);
-
 const { MongoClient } = require('mongodb');
 
 const recipesStub = require('./stubs/recipes.stubs');
 const userStub = require('./stubs/users.stubs');
+
+const app = require('../api/server');
 
 const { 
     ERROR_MSG_RECIPE_NOT_FOUND,
@@ -55,7 +52,8 @@ describe('3 - Recipes', function() {
         });   
 
         it('should be possible to list recipes.', (done) => {
-            requester
+            chai
+                .request(app)
                 .get(route)
                 .end((err, res) => {
                     res.should.have.status(200);  
@@ -77,7 +75,8 @@ describe('3 - Recipes', function() {
         it('should not be possible to get an unexisting recipe.', (done) => {
             const recipeId = '616ae6e6f372cbb713f23d02';
 
-            requester
+            chai
+                .request(app)
                 .get(route.replace(':id', recipeId))
                 .end((err, res) => {
                     res.should.have.status(ERROR_MSG_RECIPE_NOT_FOUND.httpStatus);  
@@ -89,7 +88,8 @@ describe('3 - Recipes', function() {
         it('should not be possible to get a recipe passing an invalid recipe id.', (done) => {
             const recipeId = '123456';
 
-            requester
+            chai
+                .request(app)
                 .get(route.replace(':id', recipeId))
                 .end((err, res) => {
                     res.should.have.status(ERROR_MSG_RECIPE_NOT_FOUND.httpStatus);  
@@ -99,7 +99,8 @@ describe('3 - Recipes', function() {
         });
 
         it('should be possible to get a specific recipe.', (done) => {
-            requester
+            chai
+                .request(app)
                 .get(route.replace(':id', recipeInfo._id.toString()))
                 .end((err, res) => {
                     res.should.have.status(200);
@@ -116,7 +117,8 @@ describe('3 - Recipes', function() {
         }); 
 
         it('should be possible to insert a new recipe.', (done) => {
-            requester
+            chai
+                .request(app)
                 .post(route)
                 .set({ 'Authorization': userStub.getAdminUserToken() })
                 .send(recipeInfo)
@@ -147,7 +149,8 @@ describe('3 - Recipes', function() {
             newRecipeData.ingredients = 'new-recipe-ingredients';
             newRecipeData.preparation = 'new-recipe-preparation';
 
-            requester
+            chai
+                .request(app)
                 .put(route.replace(':id', recipeInfo._id))
                 .set({ 'Authorization': userStub.getNormalUserToken() })
                 .send(newRecipeData)
@@ -173,7 +176,8 @@ describe('3 - Recipes', function() {
         }); 
 
         it('should be possible to delete a recipe.', (done) => {
-            requester
+            chai
+                .request(app)
                 .delete(route.replace(':id', recipeInfo._id))
                 .set({ 'Authorization': userStub.getNormalUserToken() })
                 .send(newRecipeData)
@@ -196,7 +200,8 @@ describe('3 - Recipes', function() {
         }); 
 
         it('should be possible to update a recipe image.', (done) => {
-            requester
+            chai
+                .request(app)
                 .put(route.replace(':id', recipeInfo._id))
                 .set({ 'Authorization': userStub.getNormalUserToken(), 'content-type': 'multipart/form-data' })
                 .attach('image', `${__dirname}/../uploads/ratinho.jpg`)
@@ -206,7 +211,7 @@ describe('3 - Recipes', function() {
                     res.body.should.have.property('name').equal(recipeInfo.name);
                     res.body.should.have.property('ingredients').equal(recipeInfo.ingredients);
                     res.body.should.have.property('preparation').equal(recipeInfo.preparation);
-                    res.body.should.have.property('image').equal(`${url.replace('http://', '')}/${UPLOAD_DIRECTORY}/${recipeInfo._id.toString()}.jpeg`);
+                    res.body.should.have.property('image').satisfy(x => x.endsWith(`/${UPLOAD_DIRECTORY}/${recipeInfo._id.toString()}.jpeg`));
                     done();
                 });
         });
@@ -220,7 +225,8 @@ describe('3 - Recipes', function() {
         }); 
 
         it('should be possible to get a recipe image.', (done) => {
-            requester
+            chai
+                .request(app)
                 .get(route.replace(':id', 'ratinho.jpg'))
                 .end((err, res) => {
                     res.should.have.status(200);
