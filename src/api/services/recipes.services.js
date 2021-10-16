@@ -21,8 +21,6 @@ const get = async (_id) => {
 const list = async () => Recipe.find();
 
 const insert = async ({ name, ingredients, preparation }, userId) => {
-    const recipe = await Recipe.findOne({ name });
-    
     const newRecipe = await Recipe.create({ name, ingredients, preparation, userId });
     
     return {
