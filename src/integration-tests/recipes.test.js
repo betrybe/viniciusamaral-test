@@ -3,8 +3,8 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 chai.should();
 
-const mongoDbUrl = 'mongodb://mongodb:27017/Cookmaster';
 const { MongoClient } = require('mongodb');
+const { MONGO_DB_URL } = require('../api/config/constants/settings');
 
 const recipesStub = require('./stubs/recipes.stubs');
 const userStub = require('./stubs/users.stubs');
@@ -26,7 +26,7 @@ describe('3 - Recipes', function() {
     this.timeout(60000);
 
     before(async () => {
-        connection = await MongoClient.connect(mongoDbUrl, {
+        connection = await MongoClient.connect(MONGO_DB_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });

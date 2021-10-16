@@ -3,16 +3,12 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 chai.should();
 
-const mongoDbUrl = 'mongodb://mongodb:27017/Cookmaster';
 const { MongoClient } = require('mongodb');
+const { MONGO_DB_URL } = require('../api/config/constants/settings');
 
 const userStub = require('./stubs/users.stubs');
 
 const app = require('../api/server');
-
-const userModel = require('../api/models/user.models');
-const recipesModel = require('../api/models/user.models');
-const settings = require('../api/config/constants/settings')
 
 const { 
   ERROR_MSG_INVALID_ENTRIES, 
@@ -29,7 +25,7 @@ describe('1 - Users', function() {
   this.timeout(60000);
 
   before(async () => {
-    connection = await MongoClient.connect(mongoDbUrl, {
+    connection = await MongoClient.connect(MONGO_DB_URL, {
       connectTimeoutMS: 3000,
       serverSelectionTimeoutMS: 3000,
       useNewUrlParser: true,
@@ -52,10 +48,6 @@ describe('1 - Users', function() {
 
     beforeEach(() => {
       userInfo = userStub.getNormalUser();
-
-      const a = userModel.userSchema;
-      const b = recipesModel.recipeSchema;
-      const c = settings.TOKEN;
     });
 
     it('should not be possible to insert a new user with "name" field missing.', (done) => {
